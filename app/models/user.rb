@@ -39,10 +39,12 @@ class User < ActiveRecord::Base
           if review
             review.rating = parameters[:rating]
           else
-            review = Review.new(creator: self, video: queue_item.video, rating: parameters[:rating])
+            review = Review.new(creator: self,
+                                video: queue_item.video,
+                                rating: parameters[:rating])
           end
 
-          if !review.save(validate: false)
+          unless review.save(validate: false)
             transaction_was_successful = false
             raise ActiveRecord::Rollback
           end
@@ -64,8 +66,9 @@ class User < ActiveRecord::Base
   end
 
   def break_position_ties
-    while self.queue_items.reload.map(&:position).uniq.count != self.queue_items.count
-      items_to_sort = self.queue_items.map { |queue_item| [queue_item.id, queue_item.position] }
+    while self.queue_items.reload.map(&:position).uniq.count != queue_items.count
+      items_to_sort =
+        self.queue_items.map { |queue_item| [queue_item.id, queue_item.position] }
 
       items_to_sort.each_with_index do |item, index|
         if index < items_to_sort.count - 1
