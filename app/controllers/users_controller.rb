@@ -10,7 +10,8 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
-      flash[:success] = 'Account created successfully, you have been logged in.'
+      flash[:success] =
+        'Account created successfully, you have been logged in.'
       redirect_to home_path
     else
       render :new
@@ -32,11 +33,13 @@ class UsersController < ApplicationController
   private
 
   def queue_items_with_valid_rating
-    params[:user][:queue_item].select{|_,v|v.include?(:rating)}.delete_if{|_,v| v[:rating].blank?}
+    params[:user][:queue_item]
+    .select { |_, v|v.include?(:rating) }
+    .delete_if { |_, v| v[:rating].blank? }
   end
 
   def queue_items_with_valid_position
-    params[:user][:queue_item].select{|_,v|v.include?(:position)}
+    params[:user][:queue_item].select { |_, v|v.include?(:position) }
   end
 
   def user_params
