@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe ResetPasswordsController do
+  describe 'GET #show' do
+    it 'redirects to the expired token page is token is expired' do
+      get :show, id: 12345
+      expect(response).to redirect_to(expired_password_reset_token_path)
+    end
+  end
+
   describe 'PATCH #update' do
     it 'redirects to invalid token page if token is not valid' do
       adam = Fabricate(:user)

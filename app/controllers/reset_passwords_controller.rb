@@ -1,4 +1,10 @@
 class ResetPasswordsController < ApplicationController
+  def show
+    if User.find_by(password_reset_token: params[:id]).nil?
+      redirect_to expired_password_reset_token_path
+    end
+  end
+
   def update
     user = User.find_by(password_reset_token: params[:id])
 
