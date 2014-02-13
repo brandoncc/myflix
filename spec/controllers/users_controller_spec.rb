@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe UsersController do
+  before do
+    ActionMailer::Base.deliveries.clear
+  end
 
   describe 'GET #new' do
     it 'should set up @user variable' do
@@ -11,7 +14,9 @@ describe UsersController do
 
   describe 'POST #create' do
     context 'with valid input' do
-      before { post :create, user: Fabricate.attributes_for(:user) }
+      before do
+        post :create, user: Fabricate.attributes_for(:user)
+      end
 
       it 'creates the user' do
         expect(User.count).to eq(1)
@@ -28,6 +33,10 @@ describe UsersController do
       it 'redirects to home path' do
         expect(response).to redirect_to home_path
       end
+
+      it 'sends welcome email' do
+        expect(ActionMailer::Base.deliveries).not_to be_empty
+      end
     end
 
     context 'with invalid input' do
@@ -43,6 +52,10 @@ describe UsersController do
 
       it 'sets @user' do
         expect(assigns(:user)).to be_instance_of(User)
+      end
+
+      it 'does not send welcome email' do
+        expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
   end

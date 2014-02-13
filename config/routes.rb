@@ -18,6 +18,13 @@ Myflix::Application.routes.draw do
 
   resources :users, only: [:show, :edit, :update], path: '/account'
 
+  get 'forgot_password', to: 'forgot_passwords#new'
+  resources :forgot_passwords, only: [:create]
+  get 'forgot_password_confirmation', to: 'forgot_passwords#confirm'
+
+  resources :reset_passwords, only: [:show, :update]
+  get 'expired_password_reset_token', to: 'reset_passwords#expired_token'
+
   get :people, to: 'relationships#index'
   resources :relationships, only: [:create, :destroy]
 
