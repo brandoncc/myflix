@@ -1,5 +1,5 @@
 class AppMailer < ActionMailer::Base
-  default from: ENV['SMTP_USER']
+  default from: ENV['MAILGUN_SMTP_USER']
 
   def welcome_email(user)
     @user = user
