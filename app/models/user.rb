@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :leaders, through: :relationships
   has_many :inverse_relationships, class_name: 'Relationship', foreign_key: 'leader_id'
   has_many :followers, through: :inverse_relationships, source: :follower
+  has_many :invites
 
   validates :email, presence: true, uniqueness: true
   validates_presence_of :full_name
@@ -38,5 +39,9 @@ class User < ActiveRecord::Base
   def generate_password_reset_token
     self.password_reset_token = SecureRandom.urlsafe_base64
     self.save(validate: false)
+  end
+
+  def follow(another_user)
+    self.leaders << another_user if self.can_follow?(another_user)
   end
 end
