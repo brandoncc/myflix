@@ -18,7 +18,7 @@ describe AppMailer do
     end
 
     it 'sends the email from the proper address' do
-      expect(email.from).to eq([ENV['MAILGUN_SMTP_USER']])
+      expect(email.from).to eq([ENV['SMTP_FROM']])
     end
 
     it 'sets the correct subject' do
@@ -50,7 +50,7 @@ describe AppMailer do
     end
 
     it 'sends the email from the proper address' do
-      expect(email.from).to eq([ENV['MAILGUN_SMTP_USER']])
+      expect(email.from).to eq([ENV['SMTP_FROM']])
     end
 
     it 'sets the correct subject' do
