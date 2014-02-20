@@ -12,8 +12,10 @@ describe User do
   it { should have_many :leaders }
   it { should have_many :inverse_relationships }
   it { should have_many :followers }
+  it { should have_many(:invites) }
 
   let(:user) { Fabricate(:user) }
+
   it 'retrieves reviews in reverse cronological order' do
     review1 = Fabricate(:review, creator: user, created_at: 1.day.ago)
     review2 = Fabricate(:review, creator: user)
@@ -123,6 +125,21 @@ describe User do
       adam = Fabricate(:user)
       adam.generate_password_reset_token
       expect(adam.password_reset_token).not_to be_nil
+    end
+  end
+
+  describe '#follow' do
+    it 'follows another user' do
+      adam = Fabricate(:user)
+      bryan = Fabricate(:user)
+      adam.follow(bryan)
+      expect(adam.follows?(bryan)).to eq(true)
+    end
+
+    it 'does not follow itself' do
+      adam = Fabricate(:user)
+      adam.follow(adam)
+      expect(adam.follows?(adam)).to eq(false)
     end
   end
 end

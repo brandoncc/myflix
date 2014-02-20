@@ -23,13 +23,13 @@ Myflix::Application.configure do
 
   config.action_mailer.default_url_options = { host: 'brandons-myflix.herokuapp.com' }
   config.action_mailer.delivery_method = :smtp
+
   config.action_mailer.smtp_settings = {
-    address:              's2-sanjose.accountservergroup.com',
-    port:                 465,
-    user_name:            ENV['SMTP_USER'],
-    password:             ENV['SMTP_PASSWORD'],
+    address:              ENV['MAILGUN_SMTP_SERVER'],
+    port:                 ENV['MAILGUN_SMTP_PORT'],
+    user_name:            ENV['MAILGUN_SMTP_LOGIN'],
+    password:             ENV['MAILGUN_SMTP_PASSWORD'],
     authentication:       'plain',
-    enable_starttls_auto: true,
-    ssl:                  true
+    domain:               'brandons-myflix.heroku.com',
   }
 end

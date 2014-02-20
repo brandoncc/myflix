@@ -11,3 +11,9 @@ shared_examples 'an unauthenticated user' do
     expect(flash[:info]).not_to be_blank
   end
 end
+
+shared_examples 'tokenable' do
+  it 'creates a token when the instance is created' do
+    expect(object.token).to be_present
+  end
+end

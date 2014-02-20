@@ -1,0 +1,15 @@
+%html
+  %body
+    Hello, #{@invite.name}.
+    %br
+    #{@invite.creator.full_name} thought that you would enjoying watching videos and has invited you to join myflix.  If you would like to see what all the fuss is about, please #{link_to('click here', register_url(invite: @invite.token)).html_safe}
+    %br
+    %br
+    Here is #{@invite.creator.full_name}'s message:
+    %br
+    #{@invite.message}
+    %br
+    %br
+    Thank you for your time and consideration,
+    %br
+    myflix management
