@@ -13,7 +13,7 @@ class InvitesController < ApplicationController
       flash[:danger] = 'It looks like your friend already has an account.'
       redirect_to new_invites_path
     elsif @invite.save
-      AppMailer.send_invite_email(@invite).deliver
+      AppMailer.delay.send_invite_email(@invite)
       flash[:success] = "#{@invite.name} has been invited.  Thanks for spreading the word!"
       redirect_to new_invites_path
     else

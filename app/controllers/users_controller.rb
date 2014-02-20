@@ -61,6 +61,6 @@ class UsersController < ApplicationController
   end
 
   def send_welcome_email(new_user)
-    AppMailer.welcome_email(new_user).deliver
+    AppMailer.delay.welcome_email(new_user)
   end
 end
