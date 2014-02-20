@@ -10,6 +10,8 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'bcrypt-ruby'
 gem 'bootstrap_form'
+gem 'sidekiq'
+gem 'unicorn'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
