@@ -142,4 +142,16 @@ describe User do
       expect(adam.follows?(adam)).to eq(false)
     end
   end
+
+  describe '#is_admin?' do
+    it "returns true if user's admin attribute is true" do
+      adam = Fabricate(:admin)
+      expect(adam.is_admin?).to eq(true)
+    end
+
+    it "returns false if user's admin attribute is false" do
+      adam = Fabricate(:user)
+      expect(adam.is_admin?).to eq(false)
+    end
+  end
 end
