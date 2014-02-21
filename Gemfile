@@ -12,6 +12,8 @@ gem 'bcrypt-ruby'
 gem 'bootstrap_form'
 gem 'sidekiq'
 gem 'unicorn'
+gem 'carrierwave'
+gem 'fog'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
