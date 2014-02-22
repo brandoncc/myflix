@@ -17,4 +17,11 @@ class ApplicationController < ActionController::Base
       redirect_to sign_in_path
     end
   end
+
+  def require_admin
+    unless logged_in? && current_user.admin?
+      flash[:danger] = 'You do not have access to that.'
+      redirect_to home_path
+    end
+  end
 end

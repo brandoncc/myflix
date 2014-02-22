@@ -16,9 +16,10 @@ Video.create(title: 'Breaking Bad - Pilot',
              'career in the manufacture of crystal meth as a way of ' +
              'guaranteeing financial solvency for his wife and son' +
              'after his death.',
-             small_cover_url: '/covers/breaking_bad_small.jpg',
-             large_cover_url: '/covers/breaking_bad_large.jpg',
-             category: drama
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/breaking_bad_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/breaking_bad_large.jpg')),
+             category: drama,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 Video.create(title: 'Dexter - Dexter',
@@ -29,9 +30,10 @@ Video.create(title: 'Dexter - Dexter',
              'killing prostitutes and leaving their bloodless bodies dismembered in various locations ' +
              'around Miami. Meanwhile, Dexter hunts a man who made snuff videos and killed a mother of ' +
              'two.',
-             small_cover_url: '/covers/dexter_small.jpg',
-             large_cover_url: '/covers/dexter_large.jpg',
-             category: drama
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/dexter_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/dexter_large.jpg')),
+             category: drama,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 Video.create(title: 'Dexter - Crocodile',
@@ -40,18 +42,20 @@ Video.create(title: 'Dexter - Crocodile',
              'strikes again and later gets in touch with Dexter. Meanwhile, when a cop is found ' +
              'murdered, Dexter helps Doakes and Debra investigate a crime boss who they believe is ' +
              'responsible.',
-             small_cover_url: '/covers/dexter_small.jpg',
-             large_cover_url: '/covers/dexter_large.jpg',
-             category: drama
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/dexter_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/dexter_large.jpg')),
+             category: drama,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 sons_of_anarchy = Video.create(title: 'Sons of Anarchy - Pilot',
                                description: 'Jax begins to doubt the club after a string of lawlessness hits the town. Meanwhile, his ' +
                                'life also becomes unstable when he learns his druggy ex-wife has given birth to his son ' +
                                'prematurely.',
-                               small_cover_url: '/covers/sons_of_anarchy_small.jpg',
-                               large_cover_url: '/covers/sons_of_anarchy_large.jpg',
-                               category: drama
+                               small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/sons_of_anarchy_small.jpg')),
+                               large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/sons_of_anarchy_large.jpg')),
+                               category: drama,
+                               video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
                                )
 
 Video.create(title: 'Game of Thrones - Winter is Coming',
@@ -69,9 +73,10 @@ Video.create(title: 'Game of Thrones - Winter is Coming',
              'Landing, as Jon Snow decides to travel north to Castle Black to join the Night’s Watch, ' +
              'accompanied by a curious Tyrion. But a startling act of treachery directed at young Bran ' +
              'may postpone their departures.',
-             small_cover_url: '/covers/game_of_thrones_small.jpg',
-             large_cover_url: '/covers/game_of_thrones_large.jpg',
-             category: drama
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/game_of_thrones_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/game_of_thrones_large.jpg')),
+             category: drama,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 Video.create(title: 'Homeland - Pilot',
@@ -79,27 +84,30 @@ Video.create(title: 'Homeland - Pilot',
              'Lewis) rescued after eight years as a POW in Afghanistan returns home a war hero. But a ' +
              'CIA operative (Claire Danes) suspects he may actually be an enemy agent with a connection ' +
              'to Al Qaeda and part of a plan to commit a terrorist act on U.S. soil.',
-             small_cover_url: '/covers/homeland_small.jpg',
-             large_cover_url: '/covers/homeland_large.jpg',
-             category: drama
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/homeland_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/homeland_large.jpg')),
+             category: drama,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 Video.create(title: 'Homeland - Grace',
              description: 'Carrie receives a new piece of electronic evidence from an undercover agent while staying ' +
              "glued to the surveillance footage of life in Brody's home, which reveals a man struggling " +
              'with his traumatic memories and resisting pressure to become a media hero.',
-             small_cover_url: '/covers/homeland_small.jpg',
-             large_cover_url: '/covers/homeland_large.jpg',
-             category: drama
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/homeland_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/homeland_large.jpg')),
+             category: drama,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 Video.create(title: 'Sherlock - A Study in Pink',
              description: 'A woman dressed in pink is discovered dead in a derelict house, the fourth in a series of ' +
              'odd suicides. Sherlock and John end up trying to solve cryptic clues and have to deal ' +
              'with a lethal killer in their quest to discover the truth.',
-             small_cover_url: '/covers/sherlock_small.jpg',
-             large_cover_url: '/covers/sherlock_large.jpg',
-             category: drama
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/sherlock_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/sherlock_large.jpg')),
+             category: drama,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 Video.create(title: '30 Rock - Pilot',
@@ -108,9 +116,10 @@ Video.create(title: '30 Rock - Pilot',
              'is hired as the new network executive. He begins to interfere with the show and convinces ' +
              'Liz to hire Tracy Jordan, a wild movie star. Jack later has Liz spend time with Tracy ' +
              'before she rejects him and she ends up swept up in his entourage.',
-             small_cover_url: '/covers/30_rock_small.jpg',
-             large_cover_url: '/covers/30_rock_large.jpg',
-             category: comedy
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/30_rock_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/30_rock_large.jpg')),
+             category: comedy,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
 the_big_bang_theory = Video.create(title: 'The Big Bang Theory - Pilot',
@@ -120,9 +129,10 @@ the_big_bang_theory = Video.create(title: 'The Big Bang Theory - Pilot',
                                    'befriend her. Sheldon, who has no experience being around someone like Penny, doesn’t ' +
                                    'know what to do, while Leonard really takes a shine to her. Meanwhile, Howard makes ' +
                                    'numerous attempts to impress Penny, while Koothrappali is too shy to talk to her.',
-                                   small_cover_url: '/covers/the_big_bang_theory_small.jpg',
-                                   large_cover_url: '/covers/the_big_bang_theory_large.jpg',
-                                   category: comedy
+                                   small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/the_big_bang_theory_small.jpg')),
+                                   large_cover: '/covers/the_big_bang_theory_large))File.open(File.join(Rails.root, .jpg',
+                                   category: comedy,
+                                   video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
                                    )
 
 american_idol = Video.create(title: 'American Idol - Auditions #1 - Boston & Austin',
@@ -135,9 +145,10 @@ american_idol = Video.create(title: 'American Idol - Auditions #1 - Boston & Aus
                              "it's up to the viewers to root and vote for their favorite contestants, ultimately " +
                              "crowning the next AMERICAN IDOL. Don't miss the auditions from Boston and Austin that " +
                              "everyone will be talking about the next day.",
-                             small_cover_url: '/covers/american_idol_small.jpg',
-                             large_cover_url: '/covers/american_idol_large.jpg',
-                             category: reality
+                             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/american_idol_small.jpg')),
+                             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/american_idol_large.jpg')),
+                             category: reality,
+                             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
                              )
 
 Video.create(title: 'American Dad - Pilot',
@@ -145,12 +156,13 @@ Video.create(title: 'American Dad - Pilot',
              "most popular girl in school, Lisa Silver. Meanwhile, after Francine cuts off Roger's " +
              "supply of junk food, he agrees to write Hayley's term papers if he continues to supply " +
              "his fix.",
-             small_cover_url: '/covers/american_dad_small.jpg',
-             large_cover_url: '/covers/american_dad_large.jpg',
-             category: comedy
+             small_cover: File.open(File.join(Rails.root, '/spec/support/uploads/american_dad_small.jpg')),
+             large_cover: File.open(File.join(Rails.root, '/spec/support/uploads/american_dad_large.jpg')),
+             category: comedy,
+             video_url: 'https://s3-us-west-1.amazonaws.com/brandons-myflix-dev/uploads/video/static/Authentic+Longfield+Super+Axles.mp4'
              )
 
-brandon = User.create(email: 'user@email.com', password: 'password', full_name: 'Brandon Conway')
+brandon = User.create(email: 'user@email.com', password: 'password', full_name: 'Brandon Conway', admin: true)
 
 Review.create(rating: 5, body: 'Amazing!', creator: brandon, video: sons_of_anarchy)
 

@@ -13,3 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+
+function play_video() {
+  $('.video_large_cover video').get(0).paused ?
+    $('.video_large_cover video').get(0).play() :
+    $('.video_large_cover video').get(0).pause();
+}

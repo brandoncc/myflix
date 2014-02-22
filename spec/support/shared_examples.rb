@@ -17,3 +17,19 @@ shared_examples 'tokenable' do
     expect(object.token).to be_present
   end
 end
+
+shared_examples 'a non-admin user' do
+  it 'redirects to the home page' do
+    adam = Fabricate(:user)
+    set_current_user(adam)
+    action
+    expect(response).to redirect_to(home_path)
+  end
+
+  it 'sets error message' do
+    adam = Fabricate(:user)
+    set_current_user(adam)
+    action
+    expect(flash[:danger]).to be_present
+  end
+end
