@@ -19,8 +19,9 @@ class ApplicationController < ActionController::Base
   end
 
   def require_admin
-    require_user and return if !logged_in?
-
-    redirect_to home_path, flash: {danger: 'You do not have access to that.' } unless current_user && current_user.admin?
+    unless logged_in? && current_user.admin?
+      flash[:danger] = 'You do not have access to that.'
+      redirect_to home_path
+    end
   end
 end
