@@ -7,7 +7,7 @@ describe SmallCoverUploader do
   before do
     SmallCoverUploader.enable_processing = true
     @uploader = SmallCoverUploader.new(@video, :small_cover)
-    @uploader.store!(File.open('public/covers/30_rock_small.jpg'))
+    @uploader.store!(File.open('spec/support/uploads/30_rock_small.jpg'))
   end
 
   after do

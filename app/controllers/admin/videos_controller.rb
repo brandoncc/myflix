@@ -18,6 +18,6 @@ class Admin::VideosController < AdminController
   private
 
   def video_params
-    params.require(:video).permit(:title, :description, :category_id, :large_cover, :small_cover, :small_cover_cache, :large_cover_cache)
+    params.require(:video).permit(:title, :description, :category_id, :large_cover, :small_cover, :small_cover_cache, :large_cover_cache, :video_url)
   end
 end

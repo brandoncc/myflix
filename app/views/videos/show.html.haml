@@ -2,7 +2,7 @@
   .container
     .row
       .video_large_cover.col-sm-7.col-sm-offset-1
-        %img(src="#{@video.large_cover_url}")
+        = video_tag(@video.video_url, size: '665x375', controls: true, autobuffer: true, poster: @video.large_cover_url)
       .video_info.col-sm-3
         %header
           %h3 #{@video.title}
@@ -12,7 +12,7 @@
             %span Rating: No ratings yet, #{link_to 'rate it now', '#reviews'}.
         %p #{@video.description}
         .actions
-          %a.btn.btn-primary(href="") Watch Now
+          %a.btn.btn-primary(href="javascript:void(0)" onclick="play_video();") Watch Now
           - if current_user.has_queued_video?(@video)
             = link_to '- My Queue', queue_item_path(QueueItem.find_by_user_and_video(current_user, @video)), method: :delete, class: 'btn btn-default'
           -else

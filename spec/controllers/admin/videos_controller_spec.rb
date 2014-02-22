@@ -36,8 +36,9 @@ describe Admin::VideosController do
             title: Faker::Lorem.words(2).join(' '),
             category_id: Category.create(name: 'Comedy').id,
             description: Faker::Lorem.paragraphs(2).join(' '),
-            large_cover: Rack::Test::UploadedFile.new("#{Rails.root}/public/covers/30_rock_large.jpg"),
-            small_cover: Rack::Test::UploadedFile.new("#{Rails.root}/public/covers/30_rock_small.jpg")
+            large_cover: Rack::Test::UploadedFile.new("#{Rails.root}/spec/support/uploads/30_rock_large.jpg"),
+            small_cover: Rack::Test::UploadedFile.new("#{Rails.root}/spec/support/uploads/30_rock_small.jpg"),
+            video_url: 'http://google.com'
           }
         }
 
@@ -68,8 +69,8 @@ describe Admin::VideosController do
           {
             title: Faker::Lorem.words(2).join(' '),
             category_id: Category.create(name: 'Comedy').id,
-            large_cover: Rack::Test::UploadedFile.new("#{Rails.root}/public/covers/30_rock_large.jpg"),
-            small_cover: Rack::Test::UploadedFile.new("#{Rails.root}/public/covers/30_rock_small.jpg")
+            large_cover: Rack::Test::UploadedFile.new("#{Rails.root}/spec/support/uploads/30_rock_large.jpg"),
+            small_cover: Rack::Test::UploadedFile.new("#{Rails.root}/spec/support/uploads/30_rock_small.jpg")
           }
         }
 
