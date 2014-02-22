@@ -14,6 +14,8 @@ gem 'sidekiq'
 gem 'unicorn'
 gem 'carrierwave'
 gem 'fog'
+gem 'unf'
+gem "mini_magick", "~> 3.5.0"
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
