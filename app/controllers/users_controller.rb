@@ -14,22 +14,21 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     ActiveRecord::Base.transaction do
-      @user.save!
-      charge_new_customer
+      charge_new_customer if @user.save && params[:stripeToken]
     end
 
-    if !flash[:danger].present?
+    if @user.new_record? || flash[:danger].present?
+      flash.now[:danger] = (flash.now[:danger] || '') + ' There was a problem creating your account. Please try again.'
+      flash.now[:danger].strip!
+
+      render :new
+    else
       handle_invite
 
       session[:user_id] = @user.id
       flash[:success] = 'Account created successfully, you have been logged in.'
       flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
       redirect_to home_path
-    else
-      flash.now[:danger] += ' There was a problem creating your account. Please try again.'
-      flash.now[:danger].strip!
-
-      render :new
     end
   end
 

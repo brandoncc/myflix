@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require_tree
 
 function play_video() {
   $('.video_large_cover video').get(0).paused ?
