@@ -16,9 +16,13 @@ gem 'carrierwave'
 gem 'fog'
 gem 'unf'
 gem "mini_magick", "~> 3.5.0"
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
+  gem 'spork-rails'
+  gem 'guard-spork'
+  gem 'childprocess'
 end
 
 group :test do

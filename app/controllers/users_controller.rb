@@ -13,7 +13,12 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.save
+    ActiveRecord::Base.transaction do
+      @user.save!
+      charge_new_customer
+    end
+
+    if !flash[:danger].present?
       handle_invite
 
       session[:user_id] = @user.id
@@ -21,7 +26,8 @@ class UsersController < ApplicationController
       flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
       redirect_to home_path
     else
-      flash.now[:danger] = 'There was a problem creating your account. Please try again.'
+      flash.now[:danger] += ' There was a problem creating your account. Please try again.'
+      flash.now[:danger].strip!
 
       render :new
     end
@@ -62,5 +68,29 @@ class UsersController < ApplicationController
 
   def send_welcome_email(new_user)
     AppMailer.delay.welcome_email(new_user)
+  end
+
+  def charge_new_customer
+    # Set your secret key: remember to change this to your live secret key in production
+    # See your keys here https://manage.stripe.com/account
+    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+
+    # Get the credit card details submitted by the form
+    token = params[:stripeToken]
+
+    # Create the charge on Stripe's servers - this will charge the user's card
+    begin
+      charge = Stripe::Charge.create(
+        :amount => 999, # amount in cents, again
+        :currency => "usd",
+        :card => token,
+        :description => user_params[:email]
+      )
+
+      return true
+    rescue Stripe::CardError => e
+      flash[:danger] = e.message
+      raise ActiveRecord::Rollback
+    end
   end
 end
