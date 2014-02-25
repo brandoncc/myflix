@@ -31,29 +31,33 @@ describe UsersController do
   end
 
   describe 'POST #create' do
+    let(:token) { stripe_token_for_valid_card }
+
+    before { StripeWrapper.set_api_key }
+
     context 'with valid input' do
       it 'creates the user' do
-        post :create, user: Fabricate.attributes_for(:user)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: token
         expect(User.count).to eq(1)
       end
 
       it 'logs user in' do
-        post :create, user: Fabricate.attributes_for(:user)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: token
         expect(session[:user_id]).to eq(User.first.id)
       end
 
       it 'shows success message' do
-        post :create, user: Fabricate.attributes_for(:user)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: token
         expect(flash[:success]).not_to be_blank
       end
 
       it 'redirects to home path' do
-        post :create, user: Fabricate.attributes_for(:user)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: token
         expect(response).to redirect_to home_path
       end
 
       it 'sends welcome email' do
-        post :create, user: Fabricate.attributes_for(:user)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: token
         expect(ActionMailer::Base.deliveries).not_to be_empty
       end
 
@@ -63,7 +67,7 @@ describe UsersController do
         invite = Fabricate(:invite)
         invite.creator = adam
         invite.save
-        post :create, user: bryan.merge!(invite: invite.token)
+        post :create, user: bryan.merge!(invite: invite.token), stripeToken: token
         bryan = User.find_by(email: bryan[:email])
         expect(bryan.follows?(adam)).to eq(true)
       end
@@ -74,7 +78,7 @@ describe UsersController do
         invite = Fabricate(:invite)
         invite.creator = adam
         invite.save
-        post :create, user: bryan.merge!(invite: invite.token)
+        post :create, user: bryan.merge!(invite: invite.token), stripeToken: token
         bryan = User.find_by(email: bryan[:email])
         expect(adam.follows?(bryan)).to eq(true)
       end
@@ -84,13 +88,13 @@ describe UsersController do
         invite = Fabricate(:invite)
         invite.creator = adam
         invite.save
-        post :create, user: Fabricate.attributes_for(:user).merge!(invite: invite.token + 'wrong')
+        post :create, user: Fabricate.attributes_for(:user).merge!(invite: invite.token + 'wrong'), stripeToken: token
         expect(adam.followers.count).to eq(0)
       end
 
-      it 'returns user object is authentication passes' do
+      it 'returns user object if authentication passes' do
         adam = Fabricate.attributes_for(:user)
-        post :create, user: adam
+        post :create, user: adam, stripeToken: token
         expect(assigns(:user).authenticate(adam[:password])).to be_instance_of(User)
       end
 
@@ -99,13 +103,13 @@ describe UsersController do
         invite = Fabricate(:invite)
         invite.creator = adam
         invite.save
-        post :create, user: Fabricate.attributes_for(:user).merge!(invite: invite.token)
+        post :create, user: Fabricate.attributes_for(:user).merge!(invite: invite.token), stripeToken: token
         expect(invite.reload.token).to be_nil
       end
     end
 
     context 'with invalid input' do
-      before { post :create, user: { email: 'user@example.com', full_name: 'Joe Smith' } }
+      before { post :create, user: { email: 'user@example.com', full_name: 'Joe Smith' }, stripeToken: token }
 
       it 'does not create the user' do
         expect(User.count).to eq(0)

@@ -22,3 +22,25 @@ end
 def sign_out
   click_on 'Sign Out'
 end
+
+def stripe_token_for_valid_card
+  Stripe::Token.create(
+    :card => {
+      :number => '4242424242424242',
+      :exp_month => 2,
+      :exp_year => Time.now.year + 2,
+      :cvc => "314"
+    },
+  ).id
+end
+
+def stripe_token_for_invalid_card
+  Stripe::Token.create(
+    :card => {
+      :number => '4000000000000002',
+      :exp_month => 2,
+      :exp_year => Time.now.year + 2,
+      :cvc => "314"
+    },
+  ).id
+end

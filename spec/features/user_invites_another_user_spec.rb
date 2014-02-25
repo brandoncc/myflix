@@ -25,8 +25,9 @@ feature 'User invites another user' do
     expect(current_email).to have_content('Hey, join this!')
     current_email.click_link 'click here'
     fill_in 'Email Address', with: user[:email]
-    fill_in 'Password', with: user[:password]
+    fill_in 'user_password', with: user[:password]
     fill_in 'Full Name', with: user[:full_name]
+    fill_in_valid_credit_card
     click_on 'Sign Up'
   end
 
@@ -35,5 +36,11 @@ feature 'User invites another user' do
     expect(page).to have_content(inviter.full_name)
     click_link inviter.full_name
     expect(page).to have_content(invited[:full_name])
+  end
+
+  def fill_in_valid_credit_card
+    fill_in 'card-number', with: '4242424242424242'
+    fill_in 'card-security-code', with: '123'
+    select (Time.now.year + 2).to_s, from: 'date_year'
   end
 end
