@@ -12,28 +12,25 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    charge = nil
 
-    ActiveRecord::Base.transaction do
-      charge = charge_new_customer if @user.save && params[:stripeToken]
-      raise ActiveRecord::Rollback unless charge && charge.successful?
-    end
+    if @user.valid?
+      charge = charge_new_customer
 
-    if @user.new_record?
-      if charge && !charge.successful?
-        flash.now[:danger] =  "#{charge.error_message} There was a problem creating your account. Please try again."
+      if charge.successful?
+        @user.save
+        handle_invite
+
+        session[:user_id] = @user.id
+        flash[:success] = 'Account created successfully, you have been logged in.'
+        flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
+        redirect_to home_path
       else
-        flash.now[:danger] =  'There was a problem creating your account. Please try again.'
+        flash.now[:danger] =  "#{charge.error_message} There was a problem creating your account. Please try again."
+        render :new
       end
-
-      render :new
     else
-      handle_invite
-
-      session[:user_id] = @user.id
-      flash[:success] = 'Account created successfully, you have been logged in.'
-      flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
-      redirect_to home_path
+      flash.now[:danger] =  'There was a problem creating your account. Please try again.'
+      render :new
     end
   end
 

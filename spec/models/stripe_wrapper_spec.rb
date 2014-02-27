@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-describe StripeWrapper::Charge do
-  before { StripeWrapper.set_api_key }
-
+describe StripeWrapper::Charge, :vcr do
   context 'with valid card number' do
     let(:token) { stripe_token_for_valid_card }
 
