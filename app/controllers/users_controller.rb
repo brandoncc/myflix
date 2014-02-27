@@ -13,22 +13,24 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    ActiveRecord::Base.transaction do
-      charge_new_customer if @user.save && params[:stripeToken]
-    end
+    if @user.valid?
+      charge = charge_new_customer
 
-    if @user.new_record? || flash[:danger].present?
-      flash.now[:danger] = (flash.now[:danger] || '') + ' There was a problem creating your account. Please try again.'
-      flash.now[:danger].strip!
+      if charge.successful?
+        @user.save
+        handle_invite
 
-      render :new
+        session[:user_id] = @user.id
+        flash[:success] = 'Account created successfully, you have been logged in.'
+        flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
+        redirect_to home_path
+      else
+        flash.now[:danger] =  "#{charge.error_message} There was a problem creating your account. Please try again."
+        render :new
+      end
     else
-      handle_invite
-
-      session[:user_id] = @user.id
-      flash[:success] = 'Account created successfully, you have been logged in.'
-      flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
-      redirect_to home_path
+      flash.now[:danger] =  'There was a problem creating your account. Please try again.'
+      render :new
     end
   end
 
@@ -70,26 +72,10 @@ class UsersController < ApplicationController
   end
 
   def charge_new_customer
-    # Set your secret key: remember to change this to your live secret key in production
-    # See your keys here https://manage.stripe.com/account
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-
-    # Get the credit card details submitted by the form
     token = params[:stripeToken]
 
-    # Create the charge on Stripe's servers - this will charge the user's card
-    begin
-      charge = Stripe::Charge.create(
-        :amount => 999, # amount in cents, again
-        :currency => "usd",
-        :card => token,
-        :description => user_params[:email]
-      )
-
-      return true
-    rescue Stripe::CardError => e
-      flash[:danger] = e.message
-      raise ActiveRecord::Rollback
-    end
+    StripeWrapper::Charge.create(amount: 999,
+                                 card_token: token,
+                                 description: user_params[:email])
   end
 end

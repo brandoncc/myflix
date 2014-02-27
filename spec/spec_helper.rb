@@ -16,8 +16,13 @@ Spork.prefork do
   require 'capybara/rspec'
   require 'rack_session_access/capybara'
   require 'capybara/email/rspec'
+  require 'vcr'
   require 'sidekiq/testing'
   Sidekiq::Testing.inline!
+  require 'database_cleaner'
+  require 'capybara/poltergeist'
+
+  Capybara.javascript_driver = :poltergeist
 
   # Requires supporting ruby files with custom matchers and macros, etc, in
   # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -31,6 +36,16 @@ Spork.prefork do
   # Checks for pending migrations before tests are run.
   # If you are not using ActiveRecord, you can remove this line.
   ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
+
+  VCR.configure do |c|
+    c.default_cassette_options = { :record => :new_episodes, :erb => true }
+
+    # not important for this example, but must be set to something
+    c.hook_into :webmock
+    c.cassette_library_dir = 'cassettes'
+    c.configure_rspec_metadata!
+    c.ignore_localhost = true
+  end
 
   RSpec.configure do |config|
     # ## Mock Framework
@@ -47,7 +62,7 @@ Spork.prefork do
     # If you're not using ActiveRecord, or you'd prefer not to run each of your
     # examples within a transaction, remove the following line or assign false
     # instead of true.
-    config.use_transactional_fixtures = true
+    config.use_transactional_fixtures = false
 
     # If true, the base class of anonymous controllers will be inferred
     # automatically. This will be the default behavior in future versions of
@@ -60,6 +75,8 @@ Spork.prefork do
     #     --seed 1234
     config.order = "random"
   end
+
+  Capybara.server_port = 52662
 end
 
 Spork.each_run do

@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 feature 'User invites another user' do
-
-  scenario 'User can invite a friend and that friend will automatically follow and lead them after accepting the invite' do
+  scenario 'User can invite a friend and that friend will automatically follow and lead them after accepting the invite', { js: true, vcr: true } do
     adam = Fabricate(:user)
     bryan = Fabricate.attributes_for(:user)
 
@@ -27,6 +26,7 @@ feature 'User invites another user' do
     fill_in 'Email Address', with: user[:email]
     fill_in 'Password', with: user[:password]
     fill_in 'Full Name', with: user[:full_name]
+    fill_in_valid_credit_card
     click_on 'Sign Up'
   end
 
@@ -35,5 +35,11 @@ feature 'User invites another user' do
     expect(page).to have_content(inviter.full_name)
     click_link inviter.full_name
     expect(page).to have_content(invited[:full_name])
+  end
+
+  def fill_in_valid_credit_card
+    fill_in 'card-number', with: '4242424242424242'
+    fill_in 'card-security-code', with: '123'
+    select (Time.now.year + 2).to_s, from: 'date_year'
   end
 end

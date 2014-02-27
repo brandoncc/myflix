@@ -16,7 +16,7 @@ module Myflix
       g.template_engine :haml
     end
 
-    config.action_mailer.default_url_options = { host: 'localhost:3000' }
+    config.action_mailer.default_url_options = { host: 'localhost:52662' }
 
     config.before_configuration do
       env_file = File.join(Rails.root, 'config', 'local_env.yml')

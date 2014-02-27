@@ -33,6 +33,11 @@ group :test do
   gem 'rack_session_access'
   gem 'launchy'
   gem 'capybara-email'
+  gem 'webmock', '1.15.0'
+  gem 'vcr'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem 'poltergeist'
 end
 
 group :development do
