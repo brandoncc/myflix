@@ -12,24 +12,15 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    registration = SignUpService.new(@user).register(stripe_token: params[:stripeToken], invitation_token: params[:invitation_token])
 
-    if @user.valid?
-      charge = charge_new_customer
-
-      if charge.successful?
-        @user.save
-        handle_invite
-
-        session[:user_id] = @user.id
-        flash[:success] = 'Account created successfully, you have been logged in.'
-        flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
-        redirect_to home_path
-      else
-        flash.now[:danger] =  "#{charge.error_message} There was a problem creating your account. Please try again."
-        render :new
-      end
+    if registration.successful?
+      session[:user_id] = @user.id
+      flash[:success] = registration.message
+      flash[:success] += " By the way, you are automatically following #{@user.leaders.first.full_name} because you accepted their invitation." unless @user.leaders.empty?
+      redirect_to home_path
     else
-      flash.now[:danger] =  'There was a problem creating your account. Please try again.'
+      flash.now[:danger] =  registration.message
       render :new
     end
   end
@@ -38,23 +29,6 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :full_name, :password)
-  end
-
-  def handle_invite
-    follow_and_lead_inviter(@user)
-    expire_invite_token
-    send_welcome_email(@user)
-  end
-
-  def follow_and_lead_inviter(new_user)
-    if @invite && @invite.creator
-      @invite.creator.follow(new_user)
-      new_user.follow(@invite.creator)
-    end
-  end
-
-  def expire_invite_token
-    @invite.update_column(:token, nil) if @invite && !@invite.new_record?
   end
 
   def setup_invite

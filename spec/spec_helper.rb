@@ -21,6 +21,7 @@ Spork.prefork do
   Sidekiq::Testing.inline!
   require 'database_cleaner'
   require 'capybara/poltergeist'
+  require 'draper/test/rspec_integration'
 
   Capybara.javascript_driver = :poltergeist
 
