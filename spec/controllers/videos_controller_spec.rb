@@ -29,6 +29,13 @@ describe VideosController do
       get :show, id: video
       expect(assigns(:review)).to be_new_record
     end
+
+    it 'decorates the video' do
+      set_current_user
+      video = Fabricate(:video)
+      get :show, id: video
+      expect(assigns(:video)).to be_decorated
+    end
   end
 
   describe 'POST #search' do
