@@ -12,10 +12,6 @@ module ApplicationHelper
     options_for_select(options, selected_value)
   end
 
-  def reviews_with_rating_for_video(video)
-    video.reviews.select{ |review| review.rating }
-  end
-
   def follow_or_unfollow_button(user_to_follow_or_unfollow)
     if current_user.can_follow?(user_to_follow_or_unfollow)
       link_to 'Follow', relationships_path(leader_id: "#{user_to_follow_or_unfollow.id}"), method: :post, class: 'button btn btn-default', style: 'float: right'

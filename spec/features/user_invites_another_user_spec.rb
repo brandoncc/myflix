@@ -23,6 +23,7 @@ feature 'User invites another user' do
     open_email('joe@email.com')
     expect(current_email).to have_content('Hey, join this!')
     current_email.click_link 'click here'
+
     fill_in 'Email Address', with: user[:email]
     fill_in 'Password', with: user[:password]
     fill_in 'Full Name', with: user[:full_name]

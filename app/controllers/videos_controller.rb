@@ -5,7 +5,7 @@ class VideosController < AuthenticatedController
 
   def show
     @review = Review.new
-    @video = Video.find(params[:id])
+    @video = Video.find(params[:id]).decorate
   end
 
   def search

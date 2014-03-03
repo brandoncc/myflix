@@ -15,7 +15,7 @@ feature 'User registers', { js: true, vcr: true } do
     fill_user_form_with_valid_info_for(adam)
     fill_credit_card_form_with_number('4000000000000002')
     submit_registration_form
-    expect(page).to have_content('There was a problem creating your account.')
+    expect(page).to have_content('Your card was declined.')
   end
 
   scenario 'User fills in valid personal info and invalid card info' do
