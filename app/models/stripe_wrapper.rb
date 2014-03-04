@@ -24,4 +24,54 @@ module StripeWrapper
       response.present?
     end
   end
+
+  class Subscription
+    attr_reader :status, :message
+
+    def initialize(status, message = nil)
+      @status = status
+      @message = message
+    end
+
+    def self.subscribe(user, card_token)
+      if user.stripe_subscription_id.blank?
+        begin
+          stripe_customer = StripeWrapper::Customer.create(user)
+          stripe_customer.card = card_token
+          stripe_customer.save
+          subscription_id = stripe_customer.subscriptions.create(plan: 'myflix_subscription').id
+          user.update_column(:stripe_subscription_id, subscription_id)
+          new(:success)
+        rescue Stripe::CardError => e
+          new(:failure, e.message)
+        end
+      else
+        new(:failure, 'User already has an active subscription.')
+      end
+    end
+
+    def successful?
+      status == :success
+    end
+
+    def error_message
+      message
+    end
+  end
+
+  class Customer
+    def self.create(user)
+      if user.stripe_customer_id.blank?
+        stripe_customer = Stripe::Customer.create(
+          description: user.email
+        )
+
+        user.update_column(:stripe_customer_id, stripe_customer.id)
+      else
+        stripe_customer = Stripe::Customer.retrieve(user.stripe_customer_id)
+      end
+
+      stripe_customer
+    end
+  end
 end
