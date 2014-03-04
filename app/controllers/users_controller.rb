@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
     registration = SignUpService.new(@user).register(stripe_token: params[:stripeToken], invitation_token: params[:invitation_token])
 
     if registration.successful?

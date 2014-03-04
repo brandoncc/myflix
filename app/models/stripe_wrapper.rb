@@ -26,23 +26,30 @@ module StripeWrapper
   end
 
   class Subscription
-    attr_reader :status, :message
+    attr_reader :status, :error_message
 
     def initialize(status, message = nil)
       @status = status
-      @message = message
+      @error_message = message
     end
 
     def self.subscribe(user, card_token)
       if user.stripe_subscription_id.blank?
         begin
           stripe_customer = StripeWrapper::Customer.create(user)
-          stripe_customer.card = card_token
-          stripe_customer.save
-          subscription_id = stripe_customer.subscriptions.create(plan: 'myflix_subscription').id
-          user.update_column(:stripe_subscription_id, subscription_id)
-          new(:success)
+
+          if stripe_customer
+            stripe_customer.card = card_token
+            stripe_customer.save
+            subscription_id = stripe_customer.subscriptions.create(plan: 'myflix_subscription').id
+            user.stripe_subscription_id = subscription_id
+            new(:success)
+          else
+            new(:failure, 'There was a problem creating your subscription. Please try again')
+          end
         rescue Stripe::CardError => e
+          stripe_customer.delete if stripe_customer
+          user.stripe_customer_id = nil
           new(:failure, e.message)
         end
       else
@@ -53,10 +60,6 @@ module StripeWrapper
     def successful?
       status == :success
     end
-
-    def error_message
-      message
-    end
   end
 
   class Customer
@@ -66,7 +69,7 @@ module StripeWrapper
           description: user.email
         )
 
-        user.update_column(:stripe_customer_id, stripe_customer.id)
+        user.stripe_customer_id = stripe_customer.id
       else
         stripe_customer = Stripe::Customer.retrieve(user.stripe_customer_id)
       end

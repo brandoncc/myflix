@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe SignUpService do
+describe SignUpService, :vcr do
   describe '#register' do
     context 'with valid user info and valid card info' do
-      let(:charge) { double('charge', successful?: true) }
+      let(:subscription) { double('subscription', successful?: true) }
       let(:new_user) { Fabricate.build(:user) }
-      before { expect(StripeWrapper::Charge).to receive(:create).and_return(charge) }
+      before { expect(StripeWrapper::Subscription).to receive(:subscribe).and_return(subscription) }
 
       it 'charges payment card' do
         SignUpService.new(new_user).register(stripe_token: '123')
@@ -27,9 +27,9 @@ describe SignUpService do
     end
 
     context 'with valid user info and invalid or declined card info' do
-      let(:charge) { double('charge', successful?: false, error_message: 'Your card was declined.') }
+      let(:subscription) { double('subscription', successful?: false, error_message: 'Your card was declined.') }
       let(:new_user) { Fabricate.build(:user) }
-      before { expect(StripeWrapper::Charge).to receive(:create).and_return(charge) }
+      before { expect(StripeWrapper::Subscription).to receive(:subscribe).and_return(subscription) }
 
       it 'does not create the user' do
         expect(new_user).not_to receive(:save)
@@ -51,9 +51,9 @@ describe SignUpService do
     end
 
     context 'with invalid user info and valid card info' do
-      let(:charge) { double('charge', successful?: true) }
+      let(:subscription) { double('subscription', successful?: true) }
       let(:new_user) { Fabricate.build(:user, password: nil) }
-      before { expect(StripeWrapper::Charge).not_to receive(:create) }
+      before { expect(StripeWrapper::Subscription).not_to receive(:subscribe) }
 
       it 'does not create the user' do
         expect(new_user).not_to receive(:save)
@@ -66,7 +66,7 @@ describe SignUpService do
       end
 
       it 'does not attempt to charge the card' do
-        expect(StripeWrapper::Charge).not_to receive(:create)
+        expect(StripeWrapper::Subscription).not_to receive(:subscribe)
         SignUpService.new(new_user).register(stripe_token: '123')
       end
 
@@ -80,9 +80,9 @@ describe SignUpService do
     end
 
     context 'with invalid user info and invalid or declined card info' do
-      let(:charge) { double('charge', successful?: false, error_message: 'Your card was declined.') }
+      let(:subscription) { double('subscription', successful?: false, error_message: 'Your card was declined.') }
       let(:new_user) { Fabricate.build(:user, password: nil) }
-      before { expect(StripeWrapper::Charge).not_to receive(:create) }
+      before { expect(StripeWrapper::Subscription).not_to receive(:subscribe) }
 
       it 'does not create the user' do
         expect(new_user).not_to receive(:save)
@@ -95,7 +95,7 @@ describe SignUpService do
       end
 
       it 'does not attempt to charge the card' do
-        expect(StripeWrapper::Charge).not_to receive(:create)
+        expect(StripeWrapper::Subscription).not_to receive(:subscribe)
         SignUpService.new(new_user).register(stripe_token: '123')
       end
 
@@ -109,11 +109,11 @@ describe SignUpService do
     end
 
     context 'with valid user info and card info with invitation token' do
-      let(:charge) { double('charge', successful?: true) }
+      let(:subscription) { double('subscription', successful?: true) }
       let(:adam) { Fabricate(:user) }
       let(:new_user) { Fabricate.build(:user) }
       let(:invite) { Fabricate(:invite, creator: adam) }
-      before { expect(StripeWrapper::Charge).to receive(:create).and_return(charge) }
+      before { expect(StripeWrapper::Subscription).to receive(:subscribe).and_return(subscription) }
 
       it 'automatically follows inviter, if valid invite token is provided' do
         SignUpService.new(new_user).register(stripe_token: '123', invitation_token: invite.token)
