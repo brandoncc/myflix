@@ -66,7 +66,7 @@ module StripeWrapper
     def self.create(user)
       if user.stripe_customer_id.blank?
         stripe_customer = Stripe::Customer.create(
-          description: user.email
+          email: user.email
         )
 
         user.stripe_customer_id = stripe_customer.id
@@ -83,6 +83,16 @@ module StripeWrapper
       Stripe::Invoice.retrieve(id)
     rescue Stripe::InvalidRequestError
       nil
+    end
+  end
+
+  class PaymentRecord
+    def self.create(event)
+      invoice = event.data.object
+      user = User.find_by(stripe_customer_id: invoice.customer)
+      unless Payment.where(charge_id: invoice.charge).any?
+        user.payments.create(invoice_id: invoice.id, charge_id: invoice.charge, amount: invoice.total)
+      end
     end
   end
 end

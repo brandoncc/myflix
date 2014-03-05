@@ -22,6 +22,7 @@ Spork.prefork do
   require 'database_cleaner'
   require 'capybara/poltergeist'
   require 'draper/test/rspec_integration'
+  require 'webmock/rspec'
 
   Capybara.javascript_driver = :selenium
 

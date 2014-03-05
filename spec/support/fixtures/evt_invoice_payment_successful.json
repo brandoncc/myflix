@@ -1,0 +1,74 @@
+{
+  "created": 1326853478,
+  "livemode": false,
+  "id": "evt_00000000000000",
+  "type": "invoice.payment_succeeded",
+  "object": "event",
+  "request": null,
+  "data": {
+    "object": {
+      "date": 1393975615,
+      "id": "in_00000000000000",
+      "period_start": 1393975615,
+      "period_end": 1393975615,
+      "lines": {
+        "data": [
+          {
+            "id": "sub_3bkC8JDjbKX7Sn",
+            "object": "line_item",
+            "type": "subscription",
+            "livemode": true,
+            "amount": 999,
+            "currency": "usd",
+            "proration": false,
+            "period": {
+              "start": 1396672357,
+              "end": 1399264357
+            },
+            "quantity": 1,
+            "plan": {
+              "interval": "month",
+              "name": "MyFlix Subscription",
+              "created": 1393868817,
+              "amount": 999,
+              "currency": "usd",
+              "id": "myflix_subscription",
+              "object": "plan",
+              "livemode": false,
+              "interval_count": 1,
+              "trial_period_days": null,
+              "metadata": {
+              }
+            },
+            "description": null,
+            "metadata": null
+          }
+        ],
+        "count": 1,
+        "object": "list",
+        "url": "/v1/invoices/in_103bfG2saBS1OrXtx6M13mYw/lines"
+      },
+      "subtotal": 999,
+      "total": 999,
+      "customer": "cus_00000000000000",
+      "object": "invoice",
+      "attempted": true,
+      "closed": true,
+      "paid": true,
+      "livemode": false,
+      "attempt_count": 0,
+      "amount_due": 999,
+      "currency": "usd",
+      "starting_balance": 0,
+      "ending_balance": 0,
+      "next_payment_attempt": null,
+      "charge": "_00000000000000",
+      "discount": null,
+      "application_fee": null,
+      "subscription": "sub_00000000000000",
+      "metadata": {
+      },
+      "description": null
+    }
+  }
+}

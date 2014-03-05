@@ -39,7 +39,7 @@ Myflix::Application.routes.draw do
 
   resources :queue_items, only: [:create, :destroy, :index], path: '/my_queue'
 
-  resources :payments, only: [:create]
+  mount StripeEvent::Engine => '/stripe-events' # provide a custom path
 
   root to: 'pages#front'
   get 'ui(/:action)', controller: 'ui'
