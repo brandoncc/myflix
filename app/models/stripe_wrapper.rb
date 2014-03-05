@@ -77,4 +77,12 @@ module StripeWrapper
       stripe_customer
     end
   end
+
+  class Invoice
+    def self.retrieve(id)
+      Stripe::Invoice.retrieve(id)
+    rescue Stripe::InvalidRequestError
+      nil
+    end
+  end
 end

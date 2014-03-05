@@ -113,4 +113,28 @@ describe 'StripeWrapper::Customer.create', :vcr do
       expect(adam.stripe_customer_id).to eq(stripe_customer_first.id)
     end
   end
+
+  describe StripeWrapper::Invoice do
+    let(:adam) { Fabricate(:user) }
+
+    describe '#retrieve' do
+      context 'with valid invoice id' do
+        it 'returns an invoice' do
+          subcription_id = StripeWrapper::Subscription.subscribe(adam, stripe_token_for_valid_card)
+          adam.save
+          invoice_id = Stripe::Invoice.all(
+            :customer => adam.stripe_customer_id,
+            :count => 1
+          )[:data].first[:id]
+          expect(StripeWrapper::Invoice.retrieve(invoice_id)).to be_instance_of(Stripe::Invoice)
+        end
+      end
+
+      context 'with invalid invoice id' do
+        it 'returns nil' do
+          expect(StripeWrapper::Invoice.retrieve('123')).to be_nil
+        end
+      end
+    end
+  end
 end

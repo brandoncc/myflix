@@ -13,6 +13,7 @@ describe User do
   it { should have_many :inverse_relationships }
   it { should have_many :followers }
   it { should have_many(:invites) }
+  it { should have_many(:payments) }
 
   let(:user) { Fabricate(:user) }
 
