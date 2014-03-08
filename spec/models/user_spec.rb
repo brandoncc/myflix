@@ -143,4 +143,20 @@ describe User do
       expect(adam.follows?(adam)).to eq(false)
     end
   end
+
+  describe '#lock!' do
+    it 'locks the user account' do
+      adam = Fabricate(:user, locked: false)
+      adam.lock!
+      expect(adam).to be_locked
+    end
+  end
+
+  describe '#unlock!' do
+    it 'unlocks the user account' do
+      adam = Fabricate(:user, locked: true)
+      adam.unlock!
+      expect(adam).not_to be_locked
+    end
+  end
 end

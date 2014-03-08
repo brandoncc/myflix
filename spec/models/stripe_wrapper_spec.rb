@@ -147,33 +147,96 @@ describe StripeWrapper::Invoice, :vcr do
 end
 
 describe StripeWrapper::PaymentRecord, :vcr do
-  let(:adam) { Fabricate(:user) }
-
-  before do
-    StripeWrapper::Subscription.subscribe(adam, stripe_token_for_valid_card)
-    adam.save
-    invoice_id = Stripe::Invoice.all(
-      :customer => adam.stripe_customer_id,
-      :count => 1
-    )[:data].first[:id]
-    @event = Stripe::Event.all.data.select{ |e| e.type == 'invoice.payment_succeeded' && e.data.object.id == invoice_id }.first
-    StripeWrapper::PaymentRecord.create(@event)
-  end
-
   describe '#create' do
+    let(:adam) { Fabricate(:user) }
+
+    after do
+      Stripe::Customer.retrieve(adam.stripe_customer_id).delete if adam.stripe_customer_id.present?
+      ActionMailer::Base.deliveries.clear
+    end
+
     context 'payment not been processed before' do
-      it 'creates payment' do
-        expect(Payment.count).to eq(1)
+
+      context 'payment is successful' do
+        before do
+          StripeWrapper::Subscription.subscribe(adam, stripe_token_for_valid_card)
+          adam.locked = true
+          adam.save
+          invoice_id = Stripe::Invoice.all(
+            :customer => adam.stripe_customer_id,
+            :count => 1
+          )[:data].first[:id]
+          event = Stripe::Event.all.data.select{ |e| e.type == 'invoice.payment_succeeded' && e.data.object.id == invoice_id }.first
+          StripeWrapper::PaymentRecord.create(event)
+        end
+
+        it 'creates payment' do
+          expect(Payment.count).to eq(1)
+        end
+
+        it 'associates payment to user who paid' do
+          expect(Payment.first.user).to eq(adam)
+        end
+
+        it 'marks the payment as successful' do
+          expect(Payment.first).to be_successful
+        end
+
+        it 'emails the user a thank you letter' do
+          expect(ActionMailer::Base.deliveries.last.to).to eq([adam.email])
+        end
+
+        it 'unlocks users account' do
+          expect(adam.reload).not_to be_locked
+        end
       end
 
-      it 'associates payment to user who paid' do
-        expect(adam.payments.count).to eq(1)
+      context 'payment is unsuccessful' do
+        before do
+          StripeWrapper::Subscription.subscribe(adam, stripe_token_for_valid_card)
+          adam.save
+          invoice_id = Stripe::Invoice.all(
+            :customer => adam.stripe_customer_id,
+            :count => 1
+          )[:data].first[:id]
+          event = Stripe::Event.all.data.select{ |e| e.type == 'invoice.payment_succeeded' && e.data.object.id == invoice_id }.first
+          event.type = 'invoice.payment_failed'
+          StripeWrapper::PaymentRecord.create(event)
+        end
+
+        it 'creates payment' do
+          expect(Payment.count).to eq(1)
+        end
+
+        it 'associates payment to user who paid' do
+          expect(adam.payments.count).to eq(1)
+        end
+
+        it 'marks the payment as unsuccessful' do
+          expect(Payment.first).not_to be_successful
+        end
+
+        it 'emails the user a payment failure letter' do
+          expect(ActionMailer::Base.deliveries.last.to).to eq([adam.email])
+        end
+
+        it 'locks users account' do
+          expect(adam.reload).to be_locked
+        end
       end
     end
 
     context 'payment has already been processed' do
       it 'does not create a second payment' do
-        StripeWrapper::PaymentRecord.create(@event)
+        StripeWrapper::Subscription.subscribe(adam, stripe_token_for_valid_card)
+        adam.save
+        invoice_id = Stripe::Invoice.all(
+          :customer => adam.stripe_customer_id,
+          :count => 1
+        )[:data].first[:id]
+        event = Stripe::Event.all.data.select{ |e| e.type == 'invoice.payment_succeeded' && e.data.object.id == invoice_id }.first
+        StripeWrapper::PaymentRecord.create(event)
+        StripeWrapper::PaymentRecord.create(event)
         expect(adam.payments.count).to eq(1)
       end
     end

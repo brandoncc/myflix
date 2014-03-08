@@ -7,6 +7,12 @@ feature 'User session management' do
     expect(page).to have_content(adam.full_name)
   end
 
+  scenario "User can't sign in with locked account" do
+    adam = Fabricate(:user, locked: true)
+    sign_in(adam)
+    expect(page).to have_content('Your account is locked')
+  end
+
   scenario 'User signs out' do
     adam = Fabricate(:user)
     sign_in(adam)

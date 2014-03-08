@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140304203400) do
+ActiveRecord::Schema.define(version: 20140307231514) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20140304203400) do
     t.integer  "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "successful"
   end
 
   create_table "queue_items", force: true do |t|
@@ -75,6 +76,7 @@ ActiveRecord::Schema.define(version: 20140304203400) do
     t.boolean  "admin"
     t.string   "stripe_subscription_id"
     t.string   "stripe_customer_id"
+    t.boolean  "locked"
   end
 
   create_table "videos", force: true do |t|

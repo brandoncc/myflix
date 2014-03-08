@@ -7,9 +7,14 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email])
 
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      flash[:success] = 'You were logged in successfully'
-      redirect_to home_path
+      if !user.locked?
+        session[:user_id] = user.id
+        flash[:success] = 'You were logged in successfully'
+        redirect_to home_path
+      else
+        flash[:danger] = 'Your account is locked temporarily. Please contact us to fix the situation.'
+        render :new
+      end
     else
       flash.now[:danger] = 'Incorrect email address or password.  Please try again.'
       render :new

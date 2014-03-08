@@ -90,8 +90,17 @@ module StripeWrapper
     def self.create(event)
       invoice = event.data.object
       user = User.find_by(stripe_customer_id: invoice.customer)
+
       unless Payment.where(charge_id: invoice.charge).any?
-        user.payments.create(invoice_id: invoice.id, charge_id: invoice.charge, amount: invoice.total)
+        if event.type == 'invoice.payment_succeeded'
+          payment = user.payments.create(invoice_id: invoice.id, charge_id: invoice.charge, amount: invoice.total, successful: true)
+          AppMailer.delay.successful_payment(user, payment)
+          user.unlock!
+        elsif event.type == 'invoice.payment_failed'
+          payment = user.payments.create(invoice_id: invoice.id, charge_id: invoice.charge, amount: invoice.total, successful: false)
+          AppMailer.delay.failed_payment(user, payment)
+          user.lock!
+        end
       end
     end
   end

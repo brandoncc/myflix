@@ -45,4 +45,12 @@ class User < ActiveRecord::Base
   def follow(another_user)
     self.leaders << another_user if self.can_follow?(another_user)
   end
+
+  def lock!
+    self.update_column(:locked, true)
+  end
+
+  def unlock!
+    self.update_column(:locked, false)
+  end
 end

@@ -43,6 +43,25 @@ describe SessionsController do
         expect(flash[:danger]).not_to be_blank
       end
     end
+
+    context 'account is locked' do
+      before do
+        adam.update_column(:locked, true)
+        post :create, email: adam.email, password: adam.password
+      end
+
+      it 'should not set user in session' do
+        expect(session[:user_id]).to be_nil
+      end
+
+      it 'renders #new template' do
+        expect(response).to render_template :new
+      end
+
+      it 'displays error message' do
+        expect(flash[:danger]).not_to be_blank
+      end
+    end
   end
 
   describe 'GET #destroy' do
