@@ -13,6 +13,7 @@ describe User do
   it { should have_many :inverse_relationships }
   it { should have_many :followers }
   it { should have_many(:invites) }
+  it { should have_many(:payments) }
 
   let(:user) { Fabricate(:user) }
 
@@ -140,6 +141,22 @@ describe User do
       adam = Fabricate(:user)
       adam.follow(adam)
       expect(adam.follows?(adam)).to eq(false)
+    end
+  end
+
+  describe '#lock!' do
+    it 'locks the user account' do
+      adam = Fabricate(:user, locked: false)
+      adam.lock!
+      expect(adam).to be_locked
+    end
+  end
+
+  describe '#unlock!' do
+    it 'unlocks the user account' do
+      adam = Fabricate(:user, locked: true)
+      adam.unlock!
+      expect(adam).not_to be_locked
     end
   end
 end

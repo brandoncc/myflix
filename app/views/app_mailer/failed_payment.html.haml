@@ -1,0 +1,9 @@
+%html
+  %body
+    Hello, #{@user.full_name}.
+    %br
+    Your subscription in the amount of #{number_to_currency(@payment.amount / 100.0)} has not been able to be charged to your account. Your account has been temporarily locked. Please contact us so we can help unlock it.
+
+    Thank you for your continued support, and we hope that you enjoy our service more each month.
+    %br
+    myflix management

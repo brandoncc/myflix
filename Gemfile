@@ -18,6 +18,7 @@ gem 'unf'
 gem "mini_magick", "~> 3.5.0"
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'draper', '~> 1.3'
+gem 'stripe_event'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'

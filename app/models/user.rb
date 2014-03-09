@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :inverse_relationships, class_name: 'Relationship', foreign_key: 'leader_id'
   has_many :followers, through: :inverse_relationships, source: :follower
   has_many :invites
+  has_many :payments
 
   validates :email, presence: true, uniqueness: true
   validates_presence_of :full_name
@@ -43,5 +44,13 @@ class User < ActiveRecord::Base
 
   def follow(another_user)
     self.leaders << another_user if self.can_follow?(another_user)
+  end
+
+  def lock!
+    self.update_column(:locked, true)
+  end
+
+  def unlock!
+    self.update_column(:locked, false)
   end
 end

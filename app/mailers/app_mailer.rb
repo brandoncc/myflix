@@ -17,4 +17,18 @@ class AppMailer < ActionMailer::Base
     mail(to: "#{invite.email}",
          subject: "#{invite.creator.full_name} has invited you to join myflix")
   end
+
+  def successful_payment(user, payment)
+    @user = user
+    @payment = payment
+    mail(to: "#{@user.email}",
+         subject: "Your payment was successful")
+  end
+
+  def failed_payment(user, payment)
+    @user = user
+    @payment = payment
+    mail(to: "#{@user.email}",
+         subject: "Your payment failed")
+  end
 end

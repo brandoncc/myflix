@@ -6,10 +6,8 @@ class SignUpService
 
   def register(options = {})
     if @user.valid?
-      charge = StripeWrapper::Charge.create(amount: 999,
-                                            card_token: options[:stripe_token],
-                                            description: @user.email)
-      if charge.successful?
+      subscription = StripeWrapper::Subscription.subscribe(@user, options[:stripe_token])
+      if subscription.successful?
         @user.save
         handle_invite(options[:invitation_token])
         AppMailer.delay.welcome_email(@user)
@@ -18,7 +16,7 @@ class SignUpService
         self
       else
         @status = :failure
-        @message = charge.error_message
+        @message = subscription.error_message
         self
       end
     else
