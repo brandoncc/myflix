@@ -19,7 +19,7 @@
           %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
             %li
               = link_to 'Invite a Friend', new_invites_path
-              = link_to 'Admin Dashboard', admin_payments_path
+              = link_to 'Admin Dashboard', admin_payments_path if current_user.admin?
               = link_to 'Account', edit_user_path(current_user)
               = link_to 'Plan and Billing', billing_path
               = link_to 'Sign Out', sign_out_path
