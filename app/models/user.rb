@@ -55,6 +55,10 @@ class User < ActiveRecord::Base
   end
 
   def next_billing_date
-    self.payments.where(successful: true).last.created_at + 1.month
+    if self.payments.count > 0
+      self.payments.where(successful: true).last.created_at + 1.month
+    else
+      Date.today
+    end
   end
 end
