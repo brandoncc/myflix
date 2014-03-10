@@ -53,4 +53,8 @@ class User < ActiveRecord::Base
   def unlock!
     self.update_column(:locked, false)
   end
+
+  def next_billing_date
+    self.payments.where(successful: true).last.created_at + 1.month
+  end
 end

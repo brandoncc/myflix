@@ -20,6 +20,7 @@ Myflix::Application.routes.draw do
   get 'sign_out', to: 'sessions#destroy'
   get 'register', to: 'users#new'
   post 'register', to: 'users#create'
+  get 'billing', to: 'users#billing'
 
   resources :users, only: [:show, :edit, :update], path: '/account'
 

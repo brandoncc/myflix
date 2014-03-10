@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature 'User invites another user' do
   scenario 'User can invite a friend and that friend will automatically follow and lead them after accepting the invite', { js: true, vcr: true } do
-    adam = Fabricate(:user)
+    adam = Fabricate(:user, full_name: 'Adam McCallaway')
     bryan = Fabricate.attributes_for(:user)
 
     sign_in(adam)
@@ -12,7 +12,9 @@ feature 'User invites another user' do
   end
 
   def invite_user
-    visit new_invites_path
+    visit home_path
+    click_on 'Adam McCallaway'
+    click_on 'Invite a Friend'
     fill_in "Friend's Name", with: 'Joe'
     fill_in "Friend's Email Address", with: 'joe@email.com'
     fill_in "Invitation Message", with: 'Hey, join this!'

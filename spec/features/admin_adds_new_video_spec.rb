@@ -3,10 +3,10 @@ require 'spec_helper'
 feature 'Admin adds new video' do
   scenario 'Admin adds a video using the new video form' do
     Fabricate(:category, name: 'Drama')
-    adam = Fabricate(:admin)
+    adam = Fabricate(:admin, full_name: 'Adam McCallaway')
     sign_in(adam)
 
-    visit new_admin_video_path
+    navigate_to_new_video_page
     fill_in_video_details
     attach_video_images
     fill_in_video_url
@@ -14,6 +14,13 @@ feature 'Admin adds new video' do
     change_to_non_admin_user
     expect_we_can_view_new_video
   end
+end
+
+def navigate_to_new_video_page
+  visit home_path
+  click_on 'Adam McCallaway'
+  click_on 'Admin Dashboard'
+  click_on 'Add a New Video'
 end
 
 def fill_in_video_details

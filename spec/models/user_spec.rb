@@ -159,4 +159,13 @@ describe User do
       expect(adam).not_to be_locked
     end
   end
+
+  describe '#next_billing_date' do
+    it 'returns the date which is one month after the previous successful billing' do
+      adam = Fabricate(:user)
+      payment = Fabricate(:payment, user: adam, created_at: 6.days.ago)
+      Fabricate(:payment, user: adam, successful: false, created_at: 2.days.ago)
+      expect(adam.next_billing_date).to eq(payment.created_at + 1.month)
+    end
+  end
 end

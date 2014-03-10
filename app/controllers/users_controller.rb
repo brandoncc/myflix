@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: :show
+  before_action :require_user, except: [:new, :create]
+  before_action :require_same_user, only: [:edit, :update]
   before_action :setup_invite, only: [:new, :create]
 
   def new
@@ -23,6 +24,21 @@ class UsersController < ApplicationController
     else
       flash.now[:danger] =  registration.message
       render :new
+    end
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      flash[:success] = 'Your account has been updated.'
+      redirect_to user_path(@user)
+    else
+      flash[:danger] = 'There was a problem updating your account. Please try again.'
+      render :edit
     end
   end
 
