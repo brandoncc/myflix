@@ -14,6 +14,15 @@ feature 'Admin adds new video' do
     change_to_non_admin_user
     expect_we_can_view_new_video
   end
+
+  scenario 'A non-admin user should not see a link to the admin dashboard' do
+    adam = Fabricate(:user)
+    sign_in(adam)
+
+    visit home_path
+    click_on adam.full_name
+    expect(page).not_to have_content('Admin Dashboard')
+  end
 end
 
 def navigate_to_new_video_page
