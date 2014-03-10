@@ -1,0 +1,17 @@
+%section.account.container
+  .row
+    .col-md-10.col-lg-offset-1
+      = bootstrap_form_for(@user, style: :horizontal, label_col: "col-sm-3", control_col: "col-sm-4") do |f|
+        %header
+          %h1 Your Account
+        %fieldset
+          .form-group
+            = f.email_field :email, label: 'Email Address'
+          .form-group
+            = f.password_field :password
+          .form-group
+            = f.text_field :full_name
+        %fieldset.actions.form-group
+          .col-sm-8.col-lg-offset-3
+            = f.submit 'Update', class: 'btn btn-default'
+            = link_to "Cancel", user_path(current_user)

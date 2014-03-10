@@ -90,4 +90,81 @@ describe UsersController do
       expect(assigns(:user)).to eq(adam)
     end
   end
+
+  describe 'GET #billing' do
+    it_behaves_like 'an unauthenticated user' do
+      let(:action) { get :billing }
+    end
+  end
+
+  describe 'GET #edit' do
+    let(:adam) { Fabricate(:user) }
+
+    it_behaves_like 'an unauthenticated user' do
+      let(:action) { get :edit, id: adam.id }
+    end
+
+    it_behaves_like 'the wrong user' do
+      let(:action) { get :edit, id: Fabricate(:user).id }
+    end
+
+    it 'sets up @user' do
+      set_current_user(adam)
+      get :edit, id: adam.id
+      expect(assigns(:user)).to eq(adam)
+    end
+  end
+
+  describe 'POST #update' do
+    let(:adam) { Fabricate(:user) }
+
+    it_behaves_like 'an unauthenticated user' do
+      let(:action) { get :update, id: adam.id, user: { name: 'AJ' } }
+    end
+
+    it_behaves_like 'the wrong user' do
+      let(:action) { post :update, id: Fabricate(:user).id, user: { name: 'Cookie Monster' } }
+    end
+
+    context 'with valid params' do
+      it 'redirects to the users profile' do
+        set_current_user(adam)
+        post :update, id: adam.id, user: { full_name: 'Snuffalufagus', password: adam.password }
+        expect(response).to redirect_to(user_path(adam))
+      end
+
+      it 'shows a success message' do
+        set_current_user(adam)
+        post :update, id: adam.id, user: { full_name: 'Snuffalufagus', password: adam.password }
+        expect(flash[:success]).to be_present
+      end
+
+      it 'updates the user' do
+        set_current_user(adam)
+        post :update, id: adam.id, user: { full_name: 'Snuffalufagus', password: adam.password }
+        expect(adam.reload.full_name).to eq('Snuffalufagus')
+      end
+    end
+
+    context 'with invalid params' do
+      it 'renders the edit template' do
+        set_current_user(adam)
+        post :update, id: adam.id, user: { full_name: 'Snuffalufagus' }
+        expect(response).to render_template(:edit)
+      end
+
+      it 'shows an error message' do
+        set_current_user(adam)
+        post :update, id: adam.id, user: { full_name: 'Snuffalufagus' }
+        expect(flash[:danger]).to be_present
+      end
+
+      it 'does not update the user' do
+        old_name = adam.full_name
+        set_current_user(adam)
+        post :update, id: adam.id, user: { full_name: 'Snuffalufagus' }
+        expect(adam.reload.full_name).to eq(old_name)
+      end
+    end
+  end
 end

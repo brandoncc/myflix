@@ -24,4 +24,11 @@ class ApplicationController < ActionController::Base
       redirect_to home_path
     end
   end
+
+  def require_same_user
+    unless logged_in? && current_user == User.find(params[:id])
+      flash[:danger] = 'You do not have access to that.'
+      redirect_to home_path
+    end
+  end
 end
