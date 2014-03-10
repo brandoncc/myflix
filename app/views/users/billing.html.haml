@@ -31,5 +31,5 @@
               - current_user.payments.each do |payment|
                 %tr
                   %td #{payment.created_at.strftime('%m/%d/%Y')}
-                  %td #{payment.created_at.strftime('%m/%d/%Y')} - #{(payment.created_at + 1.month).yesterday}
+                  %td #{payment.created_at.strftime('%m/%d/%Y')} - #{(payment.created_at + 1.month).yesterday.strftime('%m/%d/%Y')}
                   %td #{number_to_currency(payment.amount / 100.0)}
