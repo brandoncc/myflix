@@ -167,5 +167,10 @@ describe User do
       Fabricate(:payment, user: adam, successful: false, created_at: 2.days.ago)
       expect(adam.next_billing_date).to eq(payment.created_at + 1.month)
     end
+
+    it 'returns todays date if there is no previous bills in the system' do
+      adam = Fabricate(:user)
+      expect(adam.next_billing_date).to eq(Date.today)
+    end
   end
 end
