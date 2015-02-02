@@ -26,13 +26,10 @@ class MyQueueVideosController < ApplicationController
       # binding.pry
       begin         
         update_items        
+        MyQueueVideo.normalize_position(current_user)
       rescue ActiveRecord::RecordInvalid
-        flash[:error] = "Update Video Queue Items failed!"          
-        redirect_to my_queue_videos_path
-        return
-      end               
-
-      MyQueueVideo.normalize_position(current_user)
+        flash[:error] = "Update Video Queue Items failed!"                  
+      end                     
       redirect_to my_queue_videos_path
   end
 
