@@ -3,5 +3,5 @@ Fabricator(:my_queue_video) do
   # video_id { 1 }
   user
   video
-  index { 1 }
+  position { 1 }
 end

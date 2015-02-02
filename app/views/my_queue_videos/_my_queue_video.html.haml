@@ -1,6 +1,7 @@
 %tr
   %td
-    %input.form-control(type="text" value="#{my_queue_video.index}")
+    = hidden_field_tag 'video_datas[][id]', "#{my_queue_video.video.id}"
+    %input.form-control(type="text" name="video_datas[][position]"value="#{my_queue_video.position}")
   %td
     = link_to my_queue_video.video.title, video_path(my_queue_video.video)
   %td

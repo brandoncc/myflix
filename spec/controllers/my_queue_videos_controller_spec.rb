@@ -62,22 +62,49 @@ describe MyQueueVideosController do
     let!(:user) { Fabricate(:user)}
     let(:video1) { Fabricate(:video)}
     let(:video2) { Fabricate(:video)}
-    let(:q1) { Fabricate(:my_queue_video, user: user, video: video1, index: 1)}
-    let(:q2) { Fabricate(:my_queue_video, user: user, video: video2, index: 2)}
+    let(:q1) { Fabricate(:my_queue_video, user: user, video: video1, position: 1)}
+    let(:q2) { Fabricate(:my_queue_video, user: user, video: video2, position: 2)}
     context 'with valid inputs' do
       before do
         login(user)    
       end      
       it 'should redirect to queue path after update succesfully' do
-        post :update_queue_videos
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 2}, {id: q2.id, position: 1} ]
         expect(response).to redirect_to my_queue_videos_path
-      end
+      end  
       it 'should update the index order of the videos correctly' do        
-        post :update_queue_videos, video: [{id: video1.id, index: 2}, {id: video2.id, index: 1} ]
-        expect(user.my_queue_videos).to eq([q2, q1])
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 2}, {id: q2.id, position: 1} ]
+        expect(user.my_queue_videos.map(&:id)).to eq([q2.id, q1.id])
+      end
+
+      it 'normalize the position number' do
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 3}, {id: q2.id, position: 2} ]
+        expect(user.my_queue_videos.map(&:position)).to eq([1, 2])
       end
     end
-    context 'with invalid inputs'
-    context 'update as a non-owner'
+
+    context 'with invalid inputs' do
+      before do
+        login(user)        
+      end
+      it "should not update the position when input are not valid" do
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 2.1}, {id: q2.id, position: 1} ]
+        expect(user.my_queue_videos).to eq([q1, q2])
+      end
+      it "should rollback the first transaction when the second input is invalid" do
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 3}, {id: q2.id, position: 1.1} ]
+        expect(user.my_queue_videos.map(&:id)).to eq([q1.id, q2.id])
+      end
+      it 'should redirect to my_queue_path when input are not valid' do
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 2.1}, {id: q2.id, position: 1} ]
+        expect(response).to redirect_to my_queue_videos_path
+      end
+
+      it 'should have flash error when update failed' do
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 2.1}, {id: q2.id, position: 1} ]
+        expect(flash[:error]).to be_present
+      end
+    end
+    
   end
 end
