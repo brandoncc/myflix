@@ -19,6 +19,7 @@ class MyQueueVideosController < ApplicationController
   def destroy    
     queue_video = MyQueueVideo.find(params[:id])
     queue_video.destroy unless queue_video.nil? 
+    MyQueueVideo.normalize_position(current_user)
     redirect_to my_queue_path
   end
 

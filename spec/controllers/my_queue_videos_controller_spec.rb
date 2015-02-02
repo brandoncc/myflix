@@ -46,7 +46,7 @@ describe MyQueueVideosController do
       login(user)
       2.times do
         video = Fabricate(:video)
-        vq = Fabricate(:my_queue_video, video_id: video.id, user_id: user.id )
+        vq = Fabricate(:my_queue_video, video: video, user: user, position: 3 )
       end
       delete :destroy, id: 1
       expect(MyQueueVideo.count).to eq(1)
@@ -56,10 +56,21 @@ describe MyQueueVideosController do
       delete :destroy, id: 1
       response.should redirect_to root_path
     end
+
+    it 'should normalize the position after delete' do
+      login(user)
+      2.times do
+        video = Fabricate(:video)
+        vq = Fabricate(:my_queue_video, video: video, user: user, position: 3 )
+      end
+      # require 'pry'; binding.pry
+      delete :destroy, id: 1
+
+      expect(user.my_queue_videos.map(&:position)).to eq([1])
+    end
   end
 
-  describe 'POST Update_queue_videos' do
-    let!(:user) { Fabricate(:user)}
+  describe 'POST Update_queue_videos' do    
     let(:video1) { Fabricate(:video)}
     let(:video2) { Fabricate(:video)}
     let(:q1) { Fabricate(:my_queue_video, user: user, video: video1, position: 1)}
