@@ -105,6 +105,13 @@ describe MyQueueVideosController do
         expect(flash[:error]).to be_present
       end
     end
-    
+    context 'update as a non-owner' do
+      before {login(Fabricate(:user))}
+      it 'should not change the queue videos when user is not the owner of the videos' do
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 3}, {id: q2.id, position: 1} ]
+        expect(user.my_queue_videos).to eq([q1, q2])
+      end
+    end
+
   end
 end
