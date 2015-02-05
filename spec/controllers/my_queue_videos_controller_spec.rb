@@ -80,20 +80,36 @@ describe MyQueueVideosController do
         login(user)    
       end      
       it 'should redirect to queue path after update succesfully' do
-        post :update_queue_videos, video_datas: [{id: q1.id, position: 2}, {id: q2.id, position: 1} ]
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 2, rating: 3}, {id: q2.id, position: 1, rating: 3} ]
         expect(response).to redirect_to my_queue_videos_path
       end  
       it 'should update the index order of the videos correctly' do        
-        post :update_queue_videos, video_datas: [{id: q1.id, position: 2}, {id: q2.id, position: 1} ]
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 2, rating: 3}, {id: q2.id, position: 1, rating: 3 } ]
         expect(user.my_queue_videos.map(&:id)).to eq([q2.id, q1.id])
       end
 
       it 'normalize the position number' do
-        post :update_queue_videos, video_datas: [{id: q1.id, position: 3}, {id: q2.id, position: 2} ]
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 3, rating: 3}, {id: q2.id, position: 2, rating: 3 } ]
         expect(user.my_queue_videos.map(&:position)).to eq([1, 2])
       end
-    end
 
+      it 'should create new review of the video if no review exsit' do 
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 3, rating: 3}, {id: q2.id, position: 2, rating: 3 } ]
+        expect(user.reviews.map(&:rating)).to eq([3, 3 ])
+      end
+
+      it 'should update the review if review exsit' do
+        review = Fabricate(:review, user: user, video: video1, rating: 5)
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 3, rating: 2}]
+        expect(user.my_queue_videos.map(&:rating)).to eq([2 ])
+      end
+
+      it 'should empty the review if blank is selected' do
+        review = Fabricate(:review, user: user, video: video1, rating: 5)
+        post :update_queue_videos, video_datas: [{id: q1.id, position: 3, rating: nil}]
+        expect(user.my_queue_videos.map(&:rating)).to eq([nil])
+      end
+    end
     context 'with invalid inputs' do
       before do
         login(user)        
@@ -123,6 +139,8 @@ describe MyQueueVideosController do
         expect(user.my_queue_videos).to eq([q1, q2])
       end
     end
+
+
 
   end
 end

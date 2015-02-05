@@ -40,7 +40,7 @@ class MyQueueVideosController < ApplicationController
     ActiveRecord::Base.transaction do
       params[:video_datas].each do |video_data|
         queue_video = MyQueueVideo.find(video_data[:id])            
-        queue_video.update_attributes!(position: video_data[:position]) if queue_video.user == current_user                                         
+        queue_video.update_attributes!(position: video_data[:position], rating: video_data[:rating]) if queue_video.user == current_user   
       end  
     end
   end
