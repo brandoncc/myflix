@@ -71,11 +71,13 @@ describe MyQueueVideosController do
   end
 
   describe 'POST Update_queue_videos' do    
-    let(:video1) { Fabricate(:video)}
-    let(:video2) { Fabricate(:video)}
-    let(:q1) { Fabricate(:my_queue_video, user: user, video: video1, position: 1)}
-    let(:q2) { Fabricate(:my_queue_video, user: user, video: video2, position: 2)}
+    
     context 'with valid inputs' do
+      let(:video1) { Fabricate(:video)}
+      let(:video2) { Fabricate(:video)}
+      let(:q1) { Fabricate(:my_queue_video, user: user, video: video1, position: 1)}
+      let(:q2) { Fabricate(:my_queue_video, user: user, video: video2, position: 2)}
+      
       before do
         login(user)    
       end      
@@ -110,7 +112,13 @@ describe MyQueueVideosController do
         expect(user.my_queue_videos.map(&:rating)).to eq([nil])
       end
     end
+
+
     context 'with invalid inputs' do
+      let(:video1) { Fabricate(:video)}
+      let(:video2) { Fabricate(:video)}
+      let(:q1) { Fabricate(:my_queue_video, user: user, video: video1, position: 1)}
+      let(:q2) { Fabricate(:my_queue_video, user: user, video: video2, position: 2)}
       before do
         login(user)        
       end
@@ -133,6 +141,10 @@ describe MyQueueVideosController do
       end
     end
     context 'update as a non-owner' do
+      let(:video1) { Fabricate(:video)}
+      let(:video2) { Fabricate(:video)}
+      let(:q1) { Fabricate(:my_queue_video, user: user, video: video1, position: 1)}
+      let(:q2) { Fabricate(:my_queue_video, user: user, video: video2, position: 2)}
       before {login(Fabricate(:user))}
       it 'should not change the queue videos when user is not the owner of the videos' do
         post :update_queue_videos, video_datas: [{id: q1.id, position: 3}, {id: q2.id, position: 1} ]
