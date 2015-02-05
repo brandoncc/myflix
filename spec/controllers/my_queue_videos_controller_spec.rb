@@ -109,6 +109,7 @@ describe MyQueueVideosController do
       it 'should empty the review if blank is selected' do
         review = Fabricate(:review, user: user, video: video1, rating: 5)
         post :update_queue_videos, video_datas: [{id: q1.id, position: 3, rating: nil}]
+        require 'pry';binding.pry
         expect(user.my_queue_videos.map(&:rating)).to eq([nil])
       end
     end
