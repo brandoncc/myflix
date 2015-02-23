@@ -31,6 +31,7 @@ group :test do
   gem 'shoulda-matchers', require: false  
   gem 'faker'
   gem 'capybara'
+  gem 'launchy'
 end
 
 group :production do

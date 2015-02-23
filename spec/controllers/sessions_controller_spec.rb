@@ -18,7 +18,7 @@ describe SessionsController do
     it 'should fail when username not exsit' do
       post :create, email: '1234@1234.com', password: '12344'
       response.should redirect_to login_path
-    end
+    end 
     it 'should fail when password not match' do      
       post :create, email: user.email, password: '12346'
       response.should redirect_to login_path

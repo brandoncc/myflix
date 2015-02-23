@@ -8,4 +8,8 @@ class User < ActiveRecord::Base
   def queue_size
     my_queue_videos.size    
   end  
+
+  def queue_video?(video)    
+    my_queue_videos.map(&:video).include?(video) 
+  end
 end
