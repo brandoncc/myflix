@@ -18,6 +18,30 @@ feature 'user interact with queue' do
     expect(page).to have_content(v1.title)
     visit video_path(v1)
     expect(page).to_not have_content('+ My Queue')
+
+    # add v2 in the queue
+
+    visit home_path
+    find("a[href='/videos/#{v2.id}']").click
+    click_link '+ My Queue'
+
+    set_input_field(v2, 3)
+    set_input_field(v1, 4)
+    
+    click_button 'Update Instant Queue'
+
+    check_queue_position(v1, '2')
+    check_queue_position(v2, '1')
+
   end 
 
+  def set_input_field(video, value)
+    within(:xpath, "//tr[contains(.,'#{video.title}')]") do
+      fill_in 'video_datas[][position]', with: value      
+    end
+  end
+
+  def check_queue_position(video, value)
+    expect(find(:xpath, "//tr[contains(.,'#{video.title}')]//input[@type='text']").value).to eq value
+  end
 end
