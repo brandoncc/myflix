@@ -12,4 +12,10 @@ class User < ActiveRecord::Base
   def queue_video?(video)    
     my_queue_videos.map(&:video).include?(video) 
   end
+
+  def normalize_position
+    my_queue_videos.each_with_index do |video, index|
+      video.update_attributes(position: index+1)
+    end
+  end
 end

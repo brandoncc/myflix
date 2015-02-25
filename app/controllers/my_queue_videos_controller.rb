@@ -1,7 +1,7 @@
 class MyQueueVideosController < ApplicationController 
   before_action :require_user
   def index
-    # binding.pry
+    
     @videos = current_user.my_queue_videos
   end
 
@@ -19,15 +19,15 @@ class MyQueueVideosController < ApplicationController
   def destroy    
     queue_video = MyQueueVideo.find(params[:id])
     queue_video.destroy unless queue_video.nil? 
-    MyQueueVideo.normalize_position(current_user)
+    current_user.normalize_position
     redirect_to my_queue_path
   end
 
   def update_queue_videos
-      # binding.pry
+     
       begin         
         update_items        
-        MyQueueVideo.normalize_position(current_user)
+        current_user.normalize_position
       rescue ActiveRecord::RecordInvalid
         flash[:error] = "Update Video Queue Items failed!"                  
       end                     

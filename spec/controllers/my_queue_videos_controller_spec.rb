@@ -110,7 +110,7 @@ describe MyQueueVideosController do
       it 'should update the review if review exsit' do
         review = Fabricate(:review, user: current_user, video: video1, rating: 5)
         post :update_queue_videos, video_datas: [{id: q1.id, position: 3, rating: 2}]
-        expect(current_user.my_queue_videos.map(&:rating)).to eq([2 ])
+        expect(current_user.my_queue_videos.map(&:rating)).to eq([2])
       end
 
       it 'should empty the review if blank is selected' do
@@ -160,8 +160,6 @@ describe MyQueueVideosController do
         expect(new_user.my_queue_videos).to eq([q1, q2])
       end
     end
-
-
 
   end
 end
