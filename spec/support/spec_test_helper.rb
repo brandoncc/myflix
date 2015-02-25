@@ -11,4 +11,13 @@ module SpecTestHelper
   def current_user
     User.find(request.session[:user_id])
   end
+
+  def login_current_user
+    user = Fabricate(:user)
+    session[:user_id] = user.id
+  end
+
+  def clear_current_session
+    session[:user_id] = nil
+  end
 end

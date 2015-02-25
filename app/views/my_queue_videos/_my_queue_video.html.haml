@@ -1,20 +1,21 @@
 %tr
   %td
-    %input.form-control(type="text" value="#{my_queue_video.index}")
+    = hidden_field_tag 'video_datas[][id]', "#{my_queue_video.id}"
+    %input.form-control(type="text" name="video_datas[][position]"value="#{my_queue_video.position}")
   %td
     = link_to my_queue_video.video.title, video_path(my_queue_video.video)
   %td
     = button_to "Play", nil, class: "btn btn-default"
   %td
-    = my_queue_video.video.rating
-    / %select.form-group(name="")
+    = select_tag "video_datas[][rating]", options_for_video_review(my_queue_video.rating), include_blank: true
+    /     / %select.form-group(name="")
     /   %option(value="5") 5 Stars
     /   %option(value="4") 4 Stars
     /   %option(value="3") 3 Stars
     /   %option(value="2") 2 Stars
     /   %option(value="1") 1 Star
   %td
-    = link_to "TV Shows"
+    = link_to "TV Shows"  
   %td
     = link_to my_queue_video_path(my_queue_video), method: :delete do
       %i.glyphicon.glyphicon-remove
