@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
     my_queue_videos.size    
   end  
 
+  def review_size
+    reviews.size
+  end
+
   def queue_video?(video)    
     my_queue_videos.map(&:video).include?(video) 
   end

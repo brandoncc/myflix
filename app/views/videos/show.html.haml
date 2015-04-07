@@ -33,14 +33,4 @@
     %h3 
       User Reviews (#{@video.nr_of_reviews})
     %ul
-      - @video.reviews.each do |review|
-        %article.review
-          %li.row
-            .col-sm-2
-              %span
-                Rating: #{review.rating.to_s} / 5
-              %p 
-                by #{link_to review.user.name, user_path(review.user)}             
-            .col-sm-8
-              %p 
-                = review.body
+      = render @video.reviews

@@ -37,4 +37,18 @@ describe UsersController do
       response.should render_template :new
     end
   end  
+
+  describe 'GET Show' do
+    let(:user1) { Fabricate(:user)}
+    let(:user2) { Fabricate(:user)}
+    it 'should assign the @user attribute correctly' do
+      get :show, id: user1.id
+      expect(assigns(:user)).to eq(user1)
+    end
+    it 'should render the correct template' do
+      get :show, id: user1.id
+
+      response.should render_template :show      
+    end
+  end
 end
