@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   has_secure_password validation: false
   has_many :reviews  
   has_many :my_queue_videos, -> { order(:position)}
-  has_many :friendships
+  has_many :friendships, -> { order("created_at desc")}
   has_many :friends, through: :friendships
 
   validates :password, presence: true, on: :create, length: {minimum: 5}
