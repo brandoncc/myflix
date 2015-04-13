@@ -22,9 +22,7 @@ Myflix::Application.routes.draw do
   resources :categories, only: [:show, :new, :create]  
   resources :users, only: [:show, :create, :edit, :update]
 
-  resources :friendships, except: [:show, :new, :edit]
-
-  
+  resources :friendships, except: [:show, :new, :edit]  
   
   resources :my_queue_videos, only: [:create, :destroy, :index]
   

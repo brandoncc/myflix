@@ -5,8 +5,11 @@
         %header
           %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest('knwang@gmail.com'.downcase)}?s=40")
           %h2 
-            = "#{@user.name}'s video collections(#{@user.queue_size})"
-          %button.btn.btn-default Follow
+            .col-sm-9
+              = "#{@user.name}'s video collections(#{@user.queue_size})"
+            .col-sm-2
+              = link_to 'Follow', friendships_path(id: @user.id), method: 'post', class: 'btn btn-default'
+          
         %table.table
           %thead
             %tr
@@ -20,7 +23,7 @@
                 %td
                   = link_to "TV show"
 
-%section.user_reviews.container
+%section.user_reviews.container 
   .row
     .col-sm-10.col-sm-offset-1
       %header

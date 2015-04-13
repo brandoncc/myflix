@@ -31,5 +31,40 @@ describe FriendshipsController do
 
   end
 
+  describe 'DELETE Destroy' do
+    it 'should delete the friendship if follower is current user' do
+      friendship = current_user.friendships.build(friend: user2)      
+      friendship.save
+
+      delete :destroy, id: friendship
+      expect(current_user.friendships.size).to eq(0)
+      
+    end
+    it 'should not delete the friendship if the follower is not the current user' do
+      friendship = user1.friendships.build(friend: user2)      
+      friendship.save
+
+      delete :destroy, id: friendship
+      expect(user1.friendships.size).to eq(1)    
+    end
+  end
+
+
+  describe 'POST Create' do
+    before do
+      request.env["HTTP_REFERER"] = "where_i_came_from"
+    end
+    it 'should create the friendship correctly' do 
+      post :create, id: user1
+      expect(current_user.friendships.map(&:friend)).to eq([user1])
+    end
+
+    it 'should not create the frienship twice' do
+      post :create, id: user1
+      post :create, id: user1
+      expect(current_user.friendships.map(&:friend)).to eq([user1])
+    end
+  end
+
 
 end
