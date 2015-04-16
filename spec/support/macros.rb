@@ -5,3 +5,11 @@ def sign_in(a_user=nil)
   fill_in 'password', with: user.password
   click_button 'Log in'
 end
+
+def visit_video_page(video)
+  find("a[href='/videos/#{video.id}']").click  
+end
+
+def visit_user_page(user)
+  find("a[href='/users/#{user.id}']").click
+end
