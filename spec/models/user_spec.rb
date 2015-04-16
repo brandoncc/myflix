@@ -21,4 +21,18 @@ describe User do
     end
   end
 
+  describe '#follows' do
+
+    it 'should return true if the user is following another user' do
+      user = Fabricate(:user)
+      bob = Fabricate(:user)
+      friendship = Fabricate(:friendship,  follower: user, friend: bob)
+      expect(user.follows?(bob)).to eq(true)
+    end
+    it 'should return false if the user is not following another user' do
+      user = Fabricate(:user)
+      bob = Fabricate(:user)
+      expect(user.follows?(bob)).to eq(false)
+    end
+  end
 end

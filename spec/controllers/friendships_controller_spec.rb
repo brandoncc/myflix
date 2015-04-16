@@ -32,6 +32,9 @@ describe FriendshipsController do
   end
 
   describe 'DELETE Destroy' do
+    before do
+      request.env["HTTP_REFERER"] = "where_i_came_from"
+    end
     it 'should delete the friendship if follower is current user' do
       friendship = current_user.friendships.build(friend: user2)      
       friendship.save
@@ -64,6 +67,18 @@ describe FriendshipsController do
       post :create, id: user1
       expect(current_user.friendships.map(&:friend)).to eq([user1])
     end
+
+    it 'should not create the friendship for the user itself' do
+
+      post :create, id: current_user
+      expect(current_user.friendships.size).to eq(0)
+    end
+    context 'not logged in' do
+      it_behaves_like 'require_sign_in' do
+        let(:action) { post :create, id: user1 }
+      end
+    end
+
   end
 
 

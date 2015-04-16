@@ -42,11 +42,11 @@ describe UsersController do
     let(:user1) { Fabricate(:user)}
     let(:user2) { Fabricate(:user)}
     it 'should assign the @user attribute correctly' do
-      get :show, id: user1.id
+      get :show, id: user1
       expect(assigns(:user)).to eq(user1)
     end
     it 'should render the correct template' do
-      get :show, id: user1.id
+      get :show, id: user1
 
       response.should render_template :show      
     end

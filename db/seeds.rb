@@ -11,11 +11,11 @@
 # Video.create(title: 'Monk', description: 'some thing funny', small_cover_url: '/tmp/monk_large.jpg', large_cover_url: '/tmp/monk.jpg')
 # Video.create(title: 'Futurama', description: 'some thing funny', small_cover_url: '/tmp/futurama.jpg', large_cover_url: '/tmp/futurama.jpg')
 
+Review.create(user_id: 6, video_id: 1, rating: 4, body: 'testing123')
+Review.create(user_id: 7, video_id: 1, rating: 4, body: 'testing123')
+Review.create(user_id: 12, video_id: 1, rating: 4,body: 'testing123')
 
-Friendship.create(user_id: 5, friend_id: 6)
-Friendship.create(user_id: 6, friend_id: 5)
-Friendship.create(user_id: 6, friend_id: 7)
-Friendship.create(user_id: 5, friend_id: 7)
+
 
 # Category.create(name: 'TV Show')
 

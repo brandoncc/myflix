@@ -32,4 +32,12 @@ class User < ActiveRecord::Base
   def follower_size
     inverse_friendships.size
   end
+
+  def follows?(another_user)
+    friendships.map(&:friend).include?(another_user)
+  end
+
+  def can_follow?(another_user)
+    !(self.follows?(another_user) || self == another_user)
+  end
 end
