@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
   
   has_many :friendships, -> { order("created_at desc")}
   has_many :friends, through: :friendships
-  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
-  has_many :followers, :through => :inverse_friendships, :source => :user
+  has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id"
+  has_many :followers, through: :inverse_friendships, source: :user
 
   validates :password, presence: true, on: :create, length: {minimum: 5}
   validates :email, presence: true, uniqueness: true,  on: :create
