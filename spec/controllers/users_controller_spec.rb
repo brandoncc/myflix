@@ -7,10 +7,7 @@ describe UsersController do
       get :new
       assigns(:user).should be_an_instance_of User
     end
-    it 'should render the new template' do
-      get :new
-      response.should render_template :new
-    end
+       
   end
   
   describe 'POST Create' do    
@@ -23,18 +20,33 @@ describe UsersController do
       post :create, user:{email: 'example@123.com', password: '12345'}    
       response.should redirect_to login_path
     end
+    
     it 'should fail if email is not valid' do 
       post :create, user:{email: '', password: '12345'}
       expect(User.count).to eq(0)
     end
+    
     it 'should fail if password is not valid' do
       post :create, user:{email: 'example@example.com', password: '123'}
       expect(User.count).to eq(0)
     end
+
     it 'should faile if email is already been taken' do
       user = User.create(email: 'example@example.com', password: '12345')
       post :create, user:{email: 'example@example.com', password: '12345'}
       response.should render_template :new
     end
   end  
+
+  describe 'GET Show' do
+    before { login_current_user }
+    let(:user1) { Fabricate(:user)}
+    let(:user2) { Fabricate(:user)}
+    
+    it 'should assign the @user attribute correctly' do
+      get :show, id: user1
+      expect(assigns(:user)).to eq(user1)
+    end
+
+  end
 end

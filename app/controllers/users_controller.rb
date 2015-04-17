@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+  before_action :require_user, only: [:show]
   def new
     @user = User.new
   end
@@ -12,6 +12,11 @@ class UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
+    @friendship = Friendship.find_by(user_id: current_user.id, friend_id: params[:id])
   end
 
   def user_params
