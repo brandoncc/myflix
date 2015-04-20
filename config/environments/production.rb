@@ -23,9 +23,9 @@ Myflix::Application.configure do
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
-    domain:               'example.com',
-    user_name:            '<username>',
-    password:             '<password>',
+    domain:               'gmail.com',
+    user_name:            ENV["gmail_username"],
+    password:             ENV["gmail_password"],,
     authentication:       'plain',
     enable_starttls_auto: true  
   }
