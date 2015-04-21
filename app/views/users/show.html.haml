@@ -8,7 +8,7 @@
             .col-sm-9
               = "#{@user.name}'s video collections(#{@user.queue_size})"
             .col-sm-2
-              = link_to 'Follow', friendships_path(id: @user.id), method: 'post', class: 'btn btn-success' if current_user.can_follow?(@user)
+              = link_to 'Follow', friendships_path(id: @user.token), method: 'post', class: 'btn btn-success' if current_user.can_follow?(@user)
               = link_to 'UnFollow', friendship_path(@friendship), method: 'delete', class: 'btn btn-default' if @friendship
         %table.table
           %thead

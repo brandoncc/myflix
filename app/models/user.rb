@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
 
   validates :password, presence: true, on: :create, length: {minimum: 5}
   validates :email, presence: true, uniqueness: true,  on: :create
+
+  before_create :generate_token
   
   def queue_size
     my_queue_videos.size    
@@ -39,5 +41,15 @@ class User < ActiveRecord::Base
 
   def can_follow?(another_user)
     !(self.follows?(another_user) || self == another_user)
+  end
+
+  def to_param
+    token
+  end
+
+  private 
+
+  def generate_token
+    self.token = SecureRandom.urlsafe_base64
   end
 end

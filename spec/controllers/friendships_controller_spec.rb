@@ -53,24 +53,24 @@ describe FriendshipsController do
       request.env["HTTP_REFERER"] = "where_i_came_from"
     end
     it 'create the friendship correctly' do 
-      post :create, id: user1
+      post :create, id: user1.token
       expect(current_user.friendships.map(&:friend)).to eq([user1])
     end
 
     it 'should not create the frienship twice' do
-      post :create, id: user1
-      post :create, id: user1
+      post :create, id: user1.token
+      post :create, id: user1.token
       expect(current_user.friendships.map(&:friend)).to eq([user1])
     end
 
     it 'should not create the friendship for the user itself' do
 
-      post :create, id: current_user
+      post :create, id: current_user.token
       expect(current_user.friendships.size).to eq(0)
     end
     context 'not logged in' do
       it_behaves_like 'require_sign_in' do
-        let(:action) { post :create, id: user1 }
+        let(:action) { post :create, id: user1.token }
       end
     end
 

@@ -12,7 +12,7 @@ feature 'current user follow un follow another user' do
     visit home_path
     visit_video_page(startwar)
     expect(page).to have_content('starwar')
-    
+
     visit_user_page(alice)
     expect(page).to have_content('Follow')
     

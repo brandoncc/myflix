@@ -31,6 +31,24 @@ describe UsersController do
       expect(User.count).to eq(0)
     end
 
+
+    context 'sending email' do
+      it 'sends the email' do
+        post :create, user:{email: 'example@123.com', password: '12345'}    
+        expect(ActionMailer::Base.deliveries).not_to eq([])
+      end
+
+      it 'sends to the right person' do
+        post :create, user:{email: 'example@123.com', password: '12345'}    
+        expect(ActionMailer::Base.deliveries.last.to).to eq(['example@123.com'])
+      end
+      it 'has the correct content' do 
+        post :create, user:{email: 'example@123.com', password: '12345', name: 
+          'alice'}    
+        expect(ActionMailer::Base.deliveries.last.body).to include('alice')
+      end
+    end
+
     it 'should faile if email is already been taken' do
       user = User.create(email: 'example@example.com', password: '12345')
       post :create, user:{email: 'example@example.com', password: '12345'}

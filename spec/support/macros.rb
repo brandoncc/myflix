@@ -11,5 +11,5 @@ def visit_video_page(video)
 end
 
 def visit_user_page(user)
-  find("a[href='/users/#{user.id}']").click
+  find("a[href='/users/#{user.token}']").click
 end
