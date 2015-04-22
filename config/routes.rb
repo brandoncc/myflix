@@ -11,7 +11,8 @@ Myflix::Application.routes.draw do
   get '/my_queue', to: 'my_queue_videos#index'
   post '/update_queue_videos', to: 'my_queue_videos#update_queue_videos'
 
-
+  get '/forgot_password', to: 'forgot_password#new'
+  get '/confirm_email_send', to: 'forgot_password#confirm'
 
   resources :videos do
     collection do
@@ -26,5 +27,6 @@ Myflix::Application.routes.draw do
   
   resources :my_queue_videos, only: [:create, :destroy, :index]
   
+  resources :forgot_password, only: [:create]  
 
 end

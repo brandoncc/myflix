@@ -7,5 +7,6 @@
         %fieldset
         = f.email_field :email, label: 'Email Address', placeholder: 'name@example.com'
         = f.password_field :password
-        = f.submit 'Log in'
+        = f.submit 'Log in' 
+        = link_to 'Forgot password?', forgot_password_path
             
