@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_secure_password validation: false
+  has_secure_password
   has_many :reviews  
   has_many :my_queue_videos, -> { order(:position)}
   
@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id"
   has_many :followers, through: :inverse_friendships, source: :user
 
-  validates :password, presence: true, on: :create, length: {minimum: 5}
+  validates :password, on: :create, length: {minimum: 5}
   validates :email, presence: true, uniqueness: true,  on: :create
 
   before_create :generate_token
@@ -47,9 +47,23 @@ class User < ActiveRecord::Base
     token
   end
 
+
+
+  def generate_reset_token
+    self.reset_token = SecureRandom.urlsafe_base64    
+    self.save    
+  end
+  
+
+  def clear_reset_token
+    self.reset_token = nil
+  end
+
+  
   private 
 
   def generate_token
     self.token = SecureRandom.urlsafe_base64
   end
+
 end
