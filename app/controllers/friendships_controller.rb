@@ -12,7 +12,7 @@ class FriendshipsController < ApplicationController
   end
 
   def create    
-    friend = User.find_by_token(params[:id])
+    friend = User.find_by(token: params[:id])
     Friendship.create(user_id: current_user.id, friend_id: friend.id) if current_user.can_follow?(friend)
 
     redirect_to :back

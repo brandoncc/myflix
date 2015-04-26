@@ -19,11 +19,11 @@ test:
   timeout: 5000
 
 
-production:
-  adapter: postgresql  
-  database: myflix_production
-  pool: 5
-  timeout: 5000
-  username: figocia
-  password:
+# production:
+#   adapter: postgresql  
+#   database: myflix_production
+#   pool: 5
+#   timeout: 5000
+#   username: figocia
+#   password:
 

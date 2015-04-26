@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by_token(params[:id])
+    @user = User.find_by(token: params[:id])
     @friendship = Friendship.find_by(user_id: current_user.id, friend_id: @user.id)
   end
 

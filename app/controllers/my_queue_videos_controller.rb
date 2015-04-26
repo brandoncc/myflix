@@ -45,4 +45,4 @@ class MyQueueVideosController < ApplicationController
     end
   end
 
-end 
+end
