@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :friends, through: :friendships
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id"
   has_many :followers, through: :inverse_friendships, source: :user
+  has_many :invitations
 
   validates :password, on: :create, length: {minimum: 5}
   validates :email, presence: true, uniqueness: true,  on: :create

@@ -33,6 +33,7 @@ describe UsersController do
 
 
     context 'sending email' do
+      before { ActionMailer::Base.deliveries = [] }
       it 'sends the email' do
         post :create, user:{email: 'example@123.com', password: '12345'}    
         expect(ActionMailer::Base.deliveries).not_to eq([])
@@ -65,6 +66,5 @@ describe UsersController do
       get :show, id: user1
       expect(assigns(:user)).to eq(user1)
     end
-
   end
 end

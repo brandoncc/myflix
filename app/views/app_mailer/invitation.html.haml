@@ -1,0 +1,11 @@
+!!! 5
+%html(lang="en-US")
+  %body
+    %h2
+      = "Your friend #{@invitation.user.name} has sent you an invite to join MyFLiX, click the link below to register!"
+      = @invitation.message      
+    %p
+      = link_to "Accept this invite", register_with_token_url(token: @invitation.token)
+    
+    %footer
+      &copy 2015 MyFLiX

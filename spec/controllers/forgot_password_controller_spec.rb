@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ForgotPasswordController do
   describe 'POST Create' do
-
+    before { ActionMailer::Base.deliveries = [] }
     context 'with valid email' do
       it 'sends the email' do
         alice = Fabricate(:user)

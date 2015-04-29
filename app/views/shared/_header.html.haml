@@ -21,6 +21,7 @@
             %li
               %a(href="#") Account
               %a(href="#") Plan and Billing
+              = link_to 'Invite friends', new_invitation_path
               = link_to 'Sign out', logout_path
   - else
     #user_links.pull-right
