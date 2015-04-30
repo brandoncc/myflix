@@ -40,25 +40,31 @@ class User < ActiveRecord::Base
     friendships.map(&:friend).include?(another_user)
   end
 
+  def follow(another_user)
+    Friendship.create(user_id: self.id, friend_id: another_user.id)
+  end
+
   def can_follow?(another_user)
     !(self.follows?(another_user) || self == another_user)
   end
-
-  def to_param
-    token
-  end
-
-
 
   def generate_reset_token
     self.reset_token = SecureRandom.urlsafe_base64    
     self.save    
   end
   
-
   def clear_reset_token
     self.reset_token = nil
   end
+
+
+# override to_pram
+  def to_param
+    token
+  end
+
+
+  
 
   
   private 

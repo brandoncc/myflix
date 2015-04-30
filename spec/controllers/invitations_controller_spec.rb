@@ -52,6 +52,20 @@ describe InvitationsController do
     let(:invitation) {Fabricate(:invitation, user: alice)}
 
     context 'token valid' do
+      it 'renders the template' do
+        get :accept_invitation, token: invitation.token
+        expect(response).to render_template :accept_invitation
+      end
+
+      it 'sets the invitation variable' do
+        get :accept_invitation, token: invitation.token
+        expect(assigns(:invitation)).to eq(invitation)
+      end
+
+      it 'populate the user using invitation' do
+        get :accept_invitation, token: invitation.token 
+        expect(assigns(:user).email).to eq(invitation.email_invited)
+      end
     end
 
     context 'invalid token' do

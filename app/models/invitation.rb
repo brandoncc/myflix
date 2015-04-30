@@ -8,4 +8,12 @@ class Invitation < ActiveRecord::Base
   def generate_token
     self.token = SecureRandom.urlsafe_base64
   end
+
+
+  def self.expire_token(email)
+    Invitation.where(email_invited: email).each do |invitation|
+      invitation.token = nil
+      invitation.save
+    end
+  end
 end

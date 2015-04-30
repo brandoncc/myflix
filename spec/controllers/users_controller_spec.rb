@@ -50,6 +50,22 @@ describe UsersController do
       end
     end
 
+    context 'with invitation' do
+      let(:alice) { Fabricate(:user) }
+      let(:invitation) { Fabricate(:invitation, user: alice, email_invited: 'bob@bob.com') }
+      
+      it 'make the inviter and new user friends' do
+        post :create, user: {email: invitation.email_invited, password: '12345'}, token: invitation.token
+        expect(Friendship.count).to eq(2)  
+      end
+
+      it 'clears the token for all related invitation' do
+        invitation2 = Fabricate(:invitation, user: alice, email_invited: 'bob@bob.com')
+        post :create, user: {email: invitation.email_invited, password: '12345'}, token: invitation.token
+        invitation2.reload
+        expect(invitation2.token).to eq(nil)
+      end
+    end
     it 'should faile if email is already been taken' do
       user = User.create(email: 'example@example.com', password: '12345')
       post :create, user:{email: 'example@example.com', password: '12345'}
