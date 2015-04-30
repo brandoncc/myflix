@@ -61,10 +61,7 @@ class User < ActiveRecord::Base
 # override to_pram
   def to_param
     token
-  end
-
-
-  
+  end  
 
   
   private 
@@ -72,5 +69,4 @@ class User < ActiveRecord::Base
   def generate_token
     self.token = SecureRandom.urlsafe_base64
   end
-
 end
