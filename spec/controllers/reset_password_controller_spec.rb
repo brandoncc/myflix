@@ -26,8 +26,7 @@ describe ResetPasswordController do
         post :create, password: '1234567', reset_token: '1234' 
         alice.reload
         expect(alice.authenticate('1234567')).to eq(alice)
-      end
-
+      end  
       it 'clears the password token' do
         alice = Fabricate(:user, reset_token: '1234')
         post :create, password: '1234567', reset_token: '1234' 

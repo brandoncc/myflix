@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :inverse_friendships, source: :user
   has_many :invitations
 
-  validates :password, on: :create, length: {minimum: 5}
+  validates :password, length: {minimum: 5}, allow_nil: true
   validates :email, presence: true, uniqueness: true,  on: :create
 
   before_create :generate_token
@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
   
   def clear_reset_token
     self.reset_token = nil
+    self.save
   end
 
 
