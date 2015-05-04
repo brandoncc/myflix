@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Tokenable
+
   has_secure_password
   has_many :reviews  
   has_many :my_queue_videos, -> { order(:position)}
@@ -12,7 +14,6 @@ class User < ActiveRecord::Base
   validates :password, length: {minimum: 5}, allow_nil: true
   validates :email, presence: true, uniqueness: true,  on: :create
 
-  before_create :generate_token
   
   def queue_size
     my_queue_videos.size    
@@ -65,9 +66,4 @@ class User < ActiveRecord::Base
   end  
 
   
-  private 
-
-  def generate_token
-    self.token = SecureRandom.urlsafe_base64
-  end
 end

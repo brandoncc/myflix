@@ -6,6 +6,10 @@ describe User do
   it { should have_many(:friends).through(:friendships) }  
   it { should have_many(:invitations)}
 
+  it_behaves_like 'tokenable' do
+    let(:object) { Fabricate(:user )}
+  end
+
   describe '#queue_video' do
     it 'return true when the user has not queued the video' do
       user = Fabricate(:user)
