@@ -9,8 +9,10 @@ module Myflix
     config.encoding = "utf-8"
     config.filter_parameters += [:password]
     config.active_support.escape_html_entities_in_json = true
+
     config.autoload_paths += %W(#{config.root}/lib)
-    config.action_mailer.default_url_options = { host: 'localhost:3000' }
+    
+    config.action_mailer.default_url_options = { host: Rails.env.production? ? 'intense-oasis-3523.herokuapp.com' : 'localhost:3000' }
     
     config.assets.enabled = true
     config.generators do |g|
