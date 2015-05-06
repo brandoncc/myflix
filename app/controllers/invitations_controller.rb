@@ -5,7 +5,7 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    unless User.find_by(email: invitation_params[:email_invited]).nil?
+    if User.find_by(email: invitation_params[:email_invited])
       flash[:error] = 'User already exsit in Myflix'      
     else
       invitation = Invitation.new(invitation_params.merge!(user_id: current_user.id))

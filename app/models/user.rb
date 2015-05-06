@@ -51,14 +51,24 @@ class User < ActiveRecord::Base
 
   def generate_reset_token
     self.reset_token = SecureRandom.urlsafe_base64    
-    self.save    
+    save    
   end
   
   def clear_reset_token
     self.reset_token = nil
-    self.save
+    save
   end
 
+  def handle_invitation(token_param)
+    if token_param.present?
+      invitation = Invitation.find_by(token: token_param)
+      if invitation
+        self.follow(invitation.user)  
+        invitation.user.follow(self)          
+        Invitation.expire_token(invitation.email_invited)
+      end
+    end
+  end
 
 # override to_pram
   def to_param

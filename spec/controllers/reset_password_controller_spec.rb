@@ -50,4 +50,4 @@ describe ResetPasswordController do
     end
   end
   
-end
+end 
