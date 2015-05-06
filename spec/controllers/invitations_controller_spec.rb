@@ -35,7 +35,7 @@ describe InvitationsController do
       it 'errors out' do
         alice = Fabricate(:user, name: 'Alice', email: 'alice@example.com')
         post :create, invitation:{ email_invited: alice.email, name: 'joe', message: 'check it out' }
-        expect(flash[:error]).to eq('User already exsit in Myflix')
+        expect(flash[:error]).to be_present
       end
     end
 
@@ -52,10 +52,11 @@ describe InvitationsController do
     let(:invitation) {Fabricate(:invitation, user: alice)}
 
     context 'token valid' do
-      it 'renders the template' do
-        get :accept_invitation, token: invitation.token
-        expect(response).to render_template :accept_invitation
-      end
+      # should not trest the template here as it's testing rails default behavior
+      # it 'renders the template' do
+      #   get :accept_invitation, token: invitation.token
+      #   expect(response).to render_template :accept_invitation
+      # end
 
       it 'sets the invitation variable' do
         get :accept_invitation, token: invitation.token

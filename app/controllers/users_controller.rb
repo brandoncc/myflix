@@ -15,7 +15,7 @@ class UsersController < ApplicationController
           Invitation.expire_token(invitation.email_invited)
         end
       end
-      AppMailer.welcome_letter(@user).deliver
+      AppMailer.delay.welcome_letter(@user)
       redirect_to login_path
     else
       render :new

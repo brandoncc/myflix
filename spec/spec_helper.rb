@@ -18,6 +18,9 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/email/rspec'
+require 'sidekiq/testing'
+Sidekiq::Testing.inline!
+
 # require 'rspec/autorun'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

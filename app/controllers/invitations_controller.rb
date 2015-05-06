@@ -10,7 +10,7 @@ class InvitationsController < ApplicationController
     else
       invitation = Invitation.new(invitation_params.merge!(user_id: current_user.id))
       if invitation.save
-        AppMailer.invitation(invitation).deliver
+        AppMailer.delay.invitation(invitation)
         flash[:notice] = 'Invitation sent'        
       else
         flash[:error] = 'Email cannot be empty'  
@@ -18,8 +18,6 @@ class InvitationsController < ApplicationController
     end
 
     redirect_to :back
-    
-
   end
 
   def accept_invitation

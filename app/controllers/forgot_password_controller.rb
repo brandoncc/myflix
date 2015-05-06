@@ -6,7 +6,7 @@ class ForgotPasswordController < ApplicationController
 
       user.generate_reset_token
 
-      AppMailer.forgot_password(user).deliver
+      AppMailer.delay.forgot_password(user)
       redirect_to confirm_email_send_path
     else
       flash[:error] = 'Cannot find the email in MyfFix system'
@@ -14,4 +14,4 @@ class ForgotPasswordController < ApplicationController
     end
   end
 
-end 
+end
