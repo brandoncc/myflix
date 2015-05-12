@@ -7,8 +7,8 @@ Myflix::Application.configure do
 
   config.serve_static_assets = false
 
-  config.assets.compress = true
-  config.assets.js_compressor = :uglifier
+  config.assets.compress = false
+  # config.assets.js_compressor = :uglifier
 
   config.assets.compile = false
 
