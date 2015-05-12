@@ -41,5 +41,6 @@ group :production do
   gem 'pg'
   gem 'rails_12factor'
   gem 'unicorn'
+  gem "sentry-raven" #, :github => "getsentry/raven-ruby"
 end
 
