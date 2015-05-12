@@ -18,6 +18,8 @@ Myflix::Application.configure do
 
   config.active_support.deprecation = :notify
 
+  config.action_dispatch.show_exceptions = false # this is the default setting in production
+
 
   ActionMailer::Base.smtp_settings = {
     :port           => ENV['MAILGUN_SMTP_PORT'],
