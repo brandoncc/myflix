@@ -22,6 +22,7 @@
               %a(href="#") Account
               %a(href="#") Plan and Billing
               = link_to 'Invite friends', new_invitation_path
+              = link_to 'Add video', new_admin_video_path if current_user.admin?
               = link_to 'Sign out', logout_path
   - else
     #user_links.pull-right

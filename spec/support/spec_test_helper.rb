@@ -1,6 +1,7 @@
 module SpecTestHelper   
   def login_admin
-    login(:admin)
+    user = Fabricate(:admin)
+    session[:user_id] = user.id
   end
 
   def login(user)
