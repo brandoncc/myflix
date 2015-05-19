@@ -7,6 +7,7 @@ class Video < ActiveRecord::Base
   validates :title, presence: true
   validates :description, presence: true, length: {minimum: 5}
 
+  mount_uploader :large_cover_url, VideoUploader
 
   def self.search(query)
     return [] if query.blank?

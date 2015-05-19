@@ -13,7 +13,6 @@
             = f.text_field :title, class: 'span3'
             = f.text_area :description, row: 8
             = f.collection_check_boxes :categories, Category.all, :id, :name 
-            = f.file_field :large_cover_url, label: 'Large Cover'
-            = f.file_field :small_cover_url, label: 'Small Cover'
+            = f.file_field :large_cover_url, label: 'Large Cover', multiple: true           
             = f.submit 'Add Video'
           

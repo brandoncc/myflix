@@ -11,7 +11,8 @@ gem 'jquery-rails'
 gem 'bootstrap_form'
 gem 'bcrypt-ruby'
 gem 'sidekiq'
-
+gem 'carrierwave'
+gem "mini_magick"
 
 group :development do
   gem 'sqlite3'
