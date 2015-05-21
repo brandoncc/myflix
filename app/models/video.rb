@@ -3,11 +3,14 @@ class Video < ActiveRecord::Base
 	has_many :categories, through: :video_categories
   has_many :reviews, -> {  order 'created_at desc' }
   has_many :my_queue_videos
-
+    
   validates :title, presence: true
   validates :description, presence: true, length: {minimum: 5}
 
-  mount_uploader :large_cover_url, VideoUploader
+  require 'carrierwave/orm/activerecord'
+
+  mount_uploader :large_cover, VideoLargeCoverUploader 
+  mount_uploader :small_cover, VideoSmallCoverUploader 
 
   def self.search(query)
     return [] if query.blank?
