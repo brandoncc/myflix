@@ -13,6 +13,7 @@ gem 'bcrypt-ruby'
 gem 'sidekiq'
 gem 'carrierwave'
 gem "mini_magick"
+gem 'carrierwave-aws'
 
 group :development do
   gem 'sqlite3'
@@ -38,10 +39,10 @@ group :test do
   gem 'capybara-email'
 end
 
-group :production do
+group :production, :staging do
   gem 'pg'
   gem 'rails_12factor'
-  gem 'unicorn'
+  gem 'unicorn'  
   gem "sentry-raven" #, :github => "getsentry/raven-ruby"
 end
 
