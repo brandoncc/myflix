@@ -6,6 +6,12 @@ def sign_in(a_user=nil)
   click_button 'Log in'
 end
 
+
+def sign_in_as_admin
+  admin = Fabricate(:admin)
+  sign_in(admin)
+end
+
 def sign_out
   visit logout_path
 end
