@@ -24,7 +24,7 @@ feature 'Admin creates new video' do
     fill_in 'Description', with: 'Very nice movie'
     fill_in 'Video URL', with: 'https://www.youtube.com/watch?v=j0CrgLFjAIA'
     check('Comedy')
-    attach_file('Small Cover', '/Users/figochen/Pictures/hargao.png')
+    attach_file('Small Cover', 'public/tmp/family_guy.jpg')
     click_button 'Add Video'
   end
 
