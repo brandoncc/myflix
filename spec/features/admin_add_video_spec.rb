@@ -11,7 +11,7 @@ feature 'Admin creates new video' do
     sign_in_as_admin
     
     category = Fabricate(:category, name: 'Comedy')
-    
+      
     click_link 'Add video'
     fill_in_add_video_form
     play_video
@@ -30,9 +30,8 @@ feature 'Admin creates new video' do
 
   def play_video
     v1 = Video.first
-    find("a[href='/videos/#{v1.id}']").click
+    visit video_path(v1)     
     expect(page).to have_content 'Star war'
-    expect(find("a[href='https://www.youtube.com/watch?v=j0CrgLFjAIA']").visible).to be_true
- 
+    expect(page).to have_selector "a[href='https://www.youtube.com/watch?v=j0CrgLFjAIA']"     
   end
 end
