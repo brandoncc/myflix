@@ -6,10 +6,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Video.create(title: 'SouthPark', description: 'some thing funny', small_cover_url: '/tmp/south_park.jpg', large_cover_url: '/tmp/south_park.jpg')
-Video.create(title: 'Family guy', description: 'some thing funny', small_cover_url: '/tmp/family_guy.jpg', large_cover_url: '/tmp/family_guy.jpg')
-Video.create(title: 'Monk', description: 'some thing funny', small_cover_url: '/tmp/monk_large.jpg', large_cover_url: '/tmp/monk.jpg')
-Video.create(title: 'Futurama', description: 'some thing funny', small_cover_url: '/tmp/futurama.jpg', large_cover_url: '/tmp/futurama.jpg')
+# Video.create(title: 'SouthPark', description: 'some thing funny', small_cover_url: '/tmp/south_park.jpg', large_cover_url: '/tmp/south_park.jpg')
+# Video.create(title: 'Family guy', description: 'some thing funny', small_cover_url: '/tmp/family_guy.jpg', large_cover_url: '/tmp/family_guy.jpg')
+# Video.create(title: 'Monk', description: 'some thing funny', small_cover_url: '/tmp/monk_large.jpg', large_cover_url: '/tmp/monk.jpg')
+# Video.create(title: 'Futurama', description: 'some thing funny', small_cover_url: '/tmp/futurama.jpg', large_cover_url: '/tmp/futurama.jpg')
 
 # Review.create(user_id: 6, video_id: 1, rating: 4, body: 'testing123')
 # Review.create(user_id: 7, video_id: 1, rating: 4, body: 'testing123')
