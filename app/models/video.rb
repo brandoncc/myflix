@@ -7,7 +7,7 @@ class Video < ActiveRecord::Base
   validates :title, presence: true
   validates :description, presence: true, length: {minimum: 5}
 
-  require 'carrierwave/orm/activerecord'
+  # require 'carrierwave/orm/activerecord'
 
   mount_uploader :large_cover, VideoLargeCoverUploader 
   mount_uploader :small_cover, VideoSmallCoverUploader 
@@ -25,4 +25,4 @@ class Video < ActiveRecord::Base
   def nr_of_reviews
     reviews.size
   end
-end 
+end
