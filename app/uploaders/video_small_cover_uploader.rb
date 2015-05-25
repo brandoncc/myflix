@@ -8,6 +8,7 @@ class VideoSmallCoverUploader < CarrierWave::Uploader::Base
 
   # Choose what kind of storage to use for this uploader:
   # storage :carrierwave_aws
+   
   storage :aws
 
   # Override the directory where uploaded files will be stored.
