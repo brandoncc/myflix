@@ -122,7 +122,7 @@ describe Video do
         should_match_2 = Fabricate(:video, description: 'red cats and dogs')
         refresh_index
 
-        expect(Video.search('red dog').records.to_a).to match_array([should_match_1, should_match_2])
+        expect(Video.search('red dogs').records.to_a).to match_array([should_match_1, should_match_2])
       end
     end
   end

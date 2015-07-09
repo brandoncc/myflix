@@ -25,7 +25,7 @@ class Video < ActiveRecord::Base
   end
 
   def self.search(query)
-    @search_definition ||=
+    search_definition =
       if query.present?
         {
           query: {
@@ -44,7 +44,7 @@ class Video < ActiveRecord::Base
         }
       end
 
-    __elasticsearch__.search(@search_definition)
+    __elasticsearch__.search(search_definition)
   end
 
   def as_indexed_json(options = {})
