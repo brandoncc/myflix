@@ -5,6 +5,11 @@ class Video < ActiveRecord::Base
 
   validates_presence_of :title, :description, :video_url
 
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  index_name [Rails.application.engine_name, Rails.env].join('_')
+
   mount_uploader :small_cover, SmallCoverUploader
   mount_uploader :large_cover, LargeCoverUploader
 
@@ -17,6 +22,33 @@ class Video < ActiveRecord::Base
 
   def average_rating
     (total_reviews_rating / reviews_count).round(1)
+  end
+
+  def self.search(query)
+    @search_definition ||=
+      if query.present?
+        {
+          query: {
+            multi_match: {
+              query: query,
+              fields: ['title', 'description'],
+              operator: 'and'
+            }
+          }
+        }
+      else
+        {
+          query: {
+            match_all: {}
+          }
+        }
+      end
+
+    __elasticsearch__.search(@search_definition)
+  end
+
+  def as_indexed_json(options = {})
+    as_json(only: [:title, :description])
   end
 
   private
