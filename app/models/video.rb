@@ -48,7 +48,12 @@ class Video < ActiveRecord::Base
   end
 
   def as_indexed_json(options = {})
-    as_json(only: [:title, :description])
+    as_json(
+      include: {
+        reviews: { only: :body }
+      },
+      only: [:title, :description]
+    )
   end
 
   private
