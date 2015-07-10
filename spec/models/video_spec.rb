@@ -125,5 +125,26 @@ describe Video do
         expect(Video.search('red dogs').records.to_a).to match_array([should_match_1, should_match_2])
       end
     end
+
+    context 'with title, description, and reviews' do
+      it 'returns an an empty array for no match with reviews option' do
+        video = Fabricate(:video, title: 'red', description: 'red')
+        Fabricate(:review, video: video)
+
+        refresh_index
+
+        expect(Video.search('blue', reviews: true).records.to_a).to eq([])
+      end
+
+      it 'returns an array of many videos with relevance title > description > review' do
+        match_review = Fabricate(:video, title: 'blue', description: 'blue')
+        Fabricate(:review, video: match_review, body: 'red people')
+        match_title = Fabricate(:video, title: 'red', description: 'blue')
+        match_description = Fabricate(:video, title: 'blue', description: 'red')
+        refresh_index
+
+        expect(Video.search('red', reviews: true).records.to_a).to eq([match_title, match_description, match_review])
+      end
+    end
   end
 end

@@ -24,14 +24,14 @@ class Video < ActiveRecord::Base
     (total_reviews_rating / reviews_count).round(1)
   end
 
-  def self.search(query)
+  def self.search(query, options = {})
     search_definition =
       if query.present?
         {
           query: {
             multi_match: {
               query: query,
-              fields: ['title', 'description'],
+              fields: ['title^100', 'description^50'],
               operator: 'and'
             }
           }
@@ -43,6 +43,10 @@ class Video < ActiveRecord::Base
           }
         }
       end
+
+    if options[:reviews] && options[:reviews]
+      search_definition[:query][:multi_match][:fields] << 'reviews.body'
+    end
 
     __elasticsearch__.search(search_definition)
   end
