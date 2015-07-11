@@ -54,7 +54,7 @@ describe Video do
     end
 
     it 'has a maximum of 1 number after the decimal' do
-      expect(video.average_rating).to eq(2.7)
+      expect(video.reload.average_rating).to eq(2.7)
     end
   end
 
@@ -64,7 +64,7 @@ describe Video do
       first_review = Fabricate(:review, video: video, created_at: 3.days.ago)
       second_review = Fabricate(:review, video: video, created_at: 2.days.ago)
       third_review = Fabricate(:review, video: video, created_at: 1.days.ago)
-      expect(video.reviews).to eq([third_review, second_review, first_review])
+      expect(video.reload.reviews).to eq([third_review, second_review, first_review])
     end
   end
 
@@ -193,7 +193,7 @@ describe Video do
         end
 
         it 'returns an array of one video when there is one match' do
-          expect(Video.search('', rating_from: '3.3', rating_to: '4.5').records.to_a).to eq([three_point_five])
+          expect(Video.search('', rating_from: '1.8', rating_to: '4.5').records.to_a).to eq([three_point_five])
         end
 
         it 'returns an array of many videos when there are multiple matches' do
