@@ -174,3 +174,6 @@ brandon.queue_items.create(video: sons_of_anarchy, position: QueueItem.next_avai
 
 adam = User.create(email: 'adam@email.com', password: 'password', full_name: 'Adam')
 Relationship.create(follower: brandon, leader: adam)
+
+# For some reason the callback in Review doesn't fire by itself when executing this file so this fixes it
+Review.all.find_each { |r| r.video.__elasticsearch__.update_document }

@@ -3,6 +3,7 @@ Myflix::Application.routes.draw do
   resources :videos, only: :show do
     collection do
       post 'search'
+      get :advanced_search
     end
 
     resources :reviews, only: :create

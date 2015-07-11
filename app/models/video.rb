@@ -10,6 +10,12 @@ class Video < ActiveRecord::Base
 
   index_name [Rails.application.engine_name, Rails.env].join('_')
 
+  settings do
+    mappings do
+      indexes :average_rating, type: 'float'
+    end
+  end
+
   mount_uploader :small_cover, SmallCoverUploader
   mount_uploader :large_cover, LargeCoverUploader
 
@@ -22,9 +28,9 @@ class Video < ActiveRecord::Base
 
   def average_rating
     if reviews_count > 0
-      (total_reviews_rating / reviews_count).round(1)
+      (total_reviews_rating.to_f / reviews_count).round(1)
     else
-      0
+      nil
     end
   end
 
