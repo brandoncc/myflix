@@ -54,7 +54,7 @@ class Video < ActiveRecord::Base
         }
       end
 
-    if options[:reviews] && options[:reviews]
+    if query.present? && options[:reviews]
       search_definition[:query][:multi_match][:fields] << 'reviews.body'
     end
 
