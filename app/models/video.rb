@@ -21,7 +21,11 @@ class Video < ActiveRecord::Base
   end
 
   def average_rating
-    (total_reviews_rating / reviews_count).round(1)
+    if reviews_count > 0
+      (total_reviews_rating / reviews_count).round(1)
+    else
+      0
+    end
   end
 
   def self.search(query, options = {})
@@ -48,6 +52,19 @@ class Video < ActiveRecord::Base
       search_definition[:query][:multi_match][:fields] << 'reviews.body'
     end
 
+    if options[:rating_from].present? || options[:rating_to].present?
+      search_definition[:filter] = {
+          range: {
+            average_rating: {
+              gte: (options[:rating_from] if options[:rating_from].present?),
+              lte: (options[:rating_to] if options[:rating_to].present?)
+          }
+        }
+      }
+
+      search_definition[:sort] = [ average_rating: { order: :desc } ]
+    end
+
     __elasticsearch__.search(search_definition)
   end
 
@@ -56,7 +73,8 @@ class Video < ActiveRecord::Base
       include: {
         reviews: { only: :body }
       },
-      only: [:title, :description]
+      methods: [:average_rating],
+      only: [:title, :description, :average_rating]
     )
   end
 

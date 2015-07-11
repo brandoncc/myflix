@@ -146,5 +146,72 @@ describe Video do
         expect(Video.search('red', reviews: true).records.to_a).to eq([match_title, match_description, match_review])
       end
     end
+
+    context 'with average ratings' do
+      let(:one_point_five) { Fabricate(:video, title: 'the low one') }
+      let(:three_point_five) { Fabricate(:video, title: 'the high one') }
+
+      before do
+        Fabricate(:review, video: one_point_five, rating: 1)
+        Fabricate(:review, video: one_point_five, rating: 2)
+        Fabricate(:review, video: three_point_five, rating: 3)
+        Fabricate(:review, video: three_point_five, rating: 4)
+        refresh_index
+      end
+
+      context 'with only rating_from selected' do
+        it 'returns an empty array when there are no matches' do
+          expect(Video.search('', rating_from: '4.3').records.to_a).to eq([])
+        end
+
+        it 'returns an array of one video when there is one match' do
+          expect(Video.search('', rating_from: '3.1').records.to_a).to eq([three_point_five])
+        end
+
+        it 'returns an array of many videos when there are multiple matches' do
+          expect(Video.search('', rating_from: '1.3').records.to_a).to match_array([one_point_five, three_point_five])
+        end
+      end
+
+      context 'with only rating_to selected' do
+        it 'returns an empty array when there are no matches' do
+          expect(Video.search('', rating_to: '1.3').records.to_a).to eq([])
+        end
+
+        it 'returns an array of one video when there is one match' do
+          expect(Video.search('', rating_to: '2.3').records.to_a).to eq([one_point_five])
+        end
+
+        it 'returns an array of many videos when there are multiple matches' do
+          expect(Video.search('', rating_to: '4.3').records.to_a).to match_array([one_point_five, three_point_five])
+        end
+      end
+
+      context 'with both rating_from and rating_to selected' do
+        it 'returns an empty array when there are no matches' do
+          expect(Video.search('', rating_from: '2.3', rating_to: '3.4').records.to_a).to eq([])
+        end
+
+        it 'returns an array of one video when there is one match' do
+          expect(Video.search('', rating_from: '3.3', rating_to: '4.5').records.to_a).to eq([three_point_five])
+        end
+
+        it 'returns an array of many videos when there are multiple matches' do
+          expect(Video.search('', rating_from: '1.3', rating_to: '4.5').records.to_a).to match_array([one_point_five, three_point_five])
+        end
+
+        it 'returns an empty array when to is lower than from' do
+          expect(Video.search('', rating_from: '2.3', rating_to: '2.0').records.to_a).to eq([])
+        end
+      end
+
+      it 'sorts returned videos by average rating in descending order' do
+        expect(Video.search('', rating_from: '1.0').records.to_a).to eq([three_point_five, one_point_five])
+      end
+
+      it 'filters properly when the user enters a search query' do
+        expect(Video.search('one', rating_from: '3.0').records.to_a).to eq([three_point_five])
+      end
+    end
   end
 end
