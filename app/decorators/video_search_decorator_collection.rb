@@ -1,6 +1,4 @@
 class VideoSearchDecoratorCollection
-  include Enumerable
-
   attr_reader :objects
   attr_reader :decorated_objects
 
