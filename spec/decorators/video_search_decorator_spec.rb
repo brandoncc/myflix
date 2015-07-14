@@ -122,4 +122,12 @@ describe VideoSearchDecorator do
       end
     end
   end
+
+  describe '#id' do
+    it 'delegates to object._id' do
+      video = OpenStruct.new(_id: 3)
+
+      expect(VideoSearchDecorator.decorate(video).id).to eq(3)
+    end
+  end
 end

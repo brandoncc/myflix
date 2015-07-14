@@ -40,4 +40,8 @@ class VideoSearchDecorator
       'There are currently no reviews.'
     end
   end
+
+  def id
+    object._id
+  end
 end

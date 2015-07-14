@@ -33,7 +33,8 @@
       %article.video.row
         .video_data
           %figure.col-sm-2
-            %img(src="#{result.small_cover_url}" alt="video cover")
+            = link_to Video.find(result.id) do
+              %img(src="#{result.small_cover_url}" alt="video cover")
           .video_body.col-sm-10
             %header
               %h3
