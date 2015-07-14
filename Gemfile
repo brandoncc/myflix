@@ -20,6 +20,9 @@ gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'draper', '~> 1.3'
 gem 'stripe_event'
 gem 'figaro'
+gem 'psych', '~> 2.0.5'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
@@ -52,6 +55,8 @@ group :development do
   gem "binding_of_caller"
   gem 'guard-rspec', require: false
   gem 'letter_opener'
+  gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :production, :staging do

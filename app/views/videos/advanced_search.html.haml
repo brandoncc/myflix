@@ -1,0 +1,48 @@
+%section.advanced_search.container
+  = form_tag advanced_search_videos_path, class: 'form-horizontal', method: :get do
+    %header
+      %h1 Advanced Search
+    .form-group
+      .col-sm-6
+        = search_field_tag :search_text, params[:search_text], type: "search", placeholder: "Search videos by title, description", class: 'form-control'
+    .form-group
+      .col-sm-6
+        .checkbox
+          = label_tag do
+            = check_box_tag :search_reviews, 1, params[:search_reviews].present?
+            Include Reviews
+    .form-group
+      .row.average_rating_label Average Rating
+      = label_tag :rating_from, 'From:', class: 'col-sm-1 control-label'
+      .col-sm-2
+        = select_tag :rating_from, options_for_select((10..50).map { |num| num / 10.0 }, params[:rating_from]), prompt: '-', class: 'form-control'
+      = label_tag :rating_to, 'To:', class: 'col-sm-1 control-label'
+      .col-sm-2
+        = select_tag :rating_to, options_for_select((10..50).map { |num| num / 10.0 }, params[:rating_to]), prompt: '-', class: 'form-control'
+    .form-group
+      .col-sm-6
+        = button_tag(type: "submit", name: "commit", class: "btn btn-primary") do
+          %span.glyphicon.glyphicon-search
+          Search
+  %hr
+  - if !@results || !@results.present?
+    There are no results for the given criteria
+  - else
+    %h2.results_count Results: #{@results.count} videos found
+    - @results.each do |result|
+      %article.video.row
+        .video_data
+          %figure.col-sm-2
+            = link_to Video.find(result.id) do
+              %img(src="#{result.small_cover_url}" alt="video cover")
+          .video_body.col-sm-10
+            %header
+              %h3
+                = result.title
+            %p.video_description= result.description
+            %hr
+            .details
+              %span.average_rating Average rating: #{result.average_rating || 'N/A'}
+              %span.reviews_count #{result.reviews.count} reviews
+              %footer.video_review
+                = result.first_review

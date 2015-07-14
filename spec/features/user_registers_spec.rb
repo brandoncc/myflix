@@ -2,7 +2,10 @@ require 'spec_helper'
 
 feature 'User registers', { js: true, vcr: true } do
   let(:adam) { Fabricate.attributes_for(:user) }
-  before { visit register_path }
+  before do
+    page.set_rack_session(user_id: nil)
+    visit register_path
+  end
 
   scenario 'User fills in valid personal info and valid card info' do
     fill_user_form_with_valid_info_for(adam)
