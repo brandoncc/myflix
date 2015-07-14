@@ -11,7 +11,7 @@ deployment:
       - heroku pg:backups capture --app brandons-myflix
       - git push git@heroku.com:brandons-myflix.git $CIRCLE_SHA1:refs/heads/master
       - heroku run rake db:migrate --app brandons-myflix
-      - heroku run rake elasticsearch:import:model CLASS='Video' --app brandon-myflix
+      - heroku run rake elasticsearch:index --app brandons-myflix
       - heroku maintenance:off --app brandons-myflix
   staging:
     branch: staging
@@ -19,5 +19,5 @@ deployment:
       - heroku maintenance:on --app brandons-myflix-staging
       - git push git@heroku.com:brandons-myflix-staging.git $CIRCLE_SHA1:refs/heads/master
       - heroku run rake db:migrate --app brandons-myflix-staging
-      - heroku run rake elasticsearch:import:model CLASS='Video' --app brandons-myflix-staging
+      - heroku run rake elasticsearch:index --app brandons-myflix-staging
       - heroku maintenance:off --app brandons-myflix-staging
