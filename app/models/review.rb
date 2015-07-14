@@ -4,10 +4,7 @@ class Review < ActiveRecord::Base
 
   validates_presence_of :creator, :rating, :body, :video
 
-  after_create do |review|
-    Video.__elasticsearch__.create_index! unless Video.__elasticsearch__.index_exists?
-    review.video.__elasticsearch__.index_document
-  end
+  after_create { |review| review.video.__elasticsearch__.index_document }
 
   def self.valid_ratings
     (1..5).to_a
