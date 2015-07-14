@@ -97,7 +97,7 @@ class Video < ActiveRecord::Base
   private
 
   def total_reviews_rating
-    self.reviews.inject(0) { |sum, review| sum + review.rating }.to_f
+    self.reviews.inject(0) { |sum, review| sum + review.rating if review.rating }.to_f
   end
 
   def reviews_count
