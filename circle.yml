@@ -1,0 +1,23 @@
+machine:
+  ruby:
+    version: 2.0.0-p247
+  services:
+    - elasticsearch
+deployment:
+  production:
+    branch: master
+    commands:
+      - heroku maintenance:on --app brandons-myflix
+      - heroku pg:backups capture --app brandons-myflix
+      - git push git@heroku.com:brandons-myflix.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app brandons-myflix
+      - heroku run rake elasticsearch:index --app brandons-myflix
+      - heroku maintenance:off --app brandons-myflix
+  staging:
+    branch: staging
+    commands:
+      - heroku maintenance:on --app brandons-myflix-staging
+      - git push git@heroku.com:brandons-myflix-staging.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app brandons-myflix-staging
+      - heroku run rake elasticsearch:index --app brandons-myflix-staging
+      - heroku maintenance:off --app brandons-myflix-staging

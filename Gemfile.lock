@@ -62,7 +62,7 @@ GEM
       json (>= 1.7)
     celluloid (0.15.2)
       timers (~> 1.1.0)
-    childprocess (0.5.1)
+    childprocess (0.5.6)
       ffi (~> 1.0, >= 1.0.11)
     cliver (0.3.2)
     coderay (1.1.0)
@@ -85,6 +85,19 @@ GEM
       activemodel (>= 3.0)
       activesupport (>= 3.0)
       request_store (~> 1.0.3)
+    elasticsearch (1.0.12)
+      elasticsearch-api (= 1.0.12)
+      elasticsearch-transport (= 1.0.12)
+    elasticsearch-api (1.0.12)
+      multi_json
+    elasticsearch-model (0.1.7)
+      activesupport (> 3)
+      elasticsearch (> 0.4)
+      hashie
+    elasticsearch-rails (0.1.7)
+    elasticsearch-transport (1.0.12)
+      faraday
+      multi_json
     erubis (2.7.0)
     eventmachine (1.0.0)
     excon (0.31.0)
@@ -92,7 +105,11 @@ GEM
     fabrication (2.9.6)
     faker (1.2.0)
       i18n (~> 0.5)
-    ffi (1.9.3)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
+    ffi (1.9.10)
+    figaro (1.1.1)
+      thor (~> 0.14)
     fog (1.20.0)
       builder
       excon (~> 0.31.0)
@@ -123,6 +140,7 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
+    hashie (3.4.2)
     hike (1.2.3)
     i18n (0.6.5)
     jquery-rails (3.0.4)
@@ -143,17 +161,18 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     method_source (0.8.2)
-    mime-types (1.25)
+    mime-types (1.25.1)
     mini_magick (3.5.0)
       subexec (~> 0.2.1)
-    mini_portile (0.5.2)
+    mini_portile (0.6.2)
     minitest (4.7.5)
-    multi_json (1.8.2)
+    multi_json (1.11.2)
+    multipart-post (2.0.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
-    nokogiri (1.6.1)
-      mini_portile (~> 0.5.0)
+    nokogiri (1.6.6.2)
+      mini_portile (~> 0.6.0)
     pg (0.17.0)
     poltergeist (1.5.0)
       capybara (~> 2.1)
@@ -167,9 +186,9 @@ GEM
       slop (~> 3.4)
     pry-nav (0.2.3)
       pry (~> 0.9.10)
-    rack (1.5.2)
-    rack-test (0.6.2)
-      rack (>= 1.0)
+    psych (2.0.5)
+    rack (1.5.5)
+    rack-test (0.6.3)
     rack_session_access (0.1.1)
       builder (>= 2.0.0)
       rack (>= 1.0.0)
@@ -223,18 +242,18 @@ GEM
       rspec-expectations (= 3.0.0.beta1)
       rspec-mocks (= 3.0.0.beta1)
     rspec-support (3.0.0.beta1)
-    rubyzip (1.1.0)
+    rubyzip (1.1.7)
     safe_yaml (1.0.1)
     sass (3.2.12)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
-    selenium-webdriver (2.40.0)
-      childprocess (>= 0.5.0)
+    selenium-webdriver (2.46.2)
+      childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
-      websocket (~> 1.0.4)
+      websocket (~> 1.0)
     shoulda-matchers (2.5.0)
       activesupport (>= 3.0.0)
     sidekiq (2.17.6)
@@ -248,6 +267,9 @@ GEM
     spork-rails (4.0.0)
       rails (>= 3.0.0, < 5)
       spork (>= 1.0rc0)
+    spring (1.3.6)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (2.10.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -289,7 +311,7 @@ GEM
     webmock (1.15.0)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
-    websocket (1.0.7)
+    websocket (1.2.2)
     websocket-driver (0.3.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
@@ -310,8 +332,11 @@ DEPENDENCIES
   coffee-rails
   database_cleaner
   draper (~> 1.3)
+  elasticsearch-model
+  elasticsearch-rails
   fabrication
   faker
+  figaro
   fog
   guard-rspec
   guard-spork
@@ -324,6 +349,7 @@ DEPENDENCIES
   poltergeist
   pry
   pry-nav
+  psych (~> 2.0.5)
   rack_session_access
   rails
   rails_12factor
@@ -333,6 +359,8 @@ DEPENDENCIES
   shoulda-matchers
   sidekiq
   spork-rails
+  spring
+  spring-commands-rspec
   sqlite3
   stripe!
   stripe_event
@@ -342,3 +370,6 @@ DEPENDENCIES
   unicorn
   vcr
   webmock (= 1.15.0)
+
+BUNDLED WITH
+   1.10.5

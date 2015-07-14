@@ -4,6 +4,8 @@ class Review < ActiveRecord::Base
 
   validates_presence_of :creator, :rating, :body, :video
 
+  after_create { |review| review.video.__elasticsearch__.index_document }
+
   def self.valid_ratings
     (1..5).to_a
   end
