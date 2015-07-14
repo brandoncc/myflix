@@ -21,11 +21,11 @@
         = select_tag :rating_to, options_for_select((10..50).map { |num| num / 10.0 }, params[:rating_to]), prompt: '-', class: 'form-control'
     .form-group
       .col-sm-6
-        = button_tag(type: "submit", class: "btn btn-primary") do
+        = button_tag(type: "submit", name: "commit", class: "btn btn-primary") do
           %span.glyphicon.glyphicon-search
           Search
   %hr
-  - if @results.empty?
+  - if !@results || !@results.present?
     There are no results for the given criteria
   - else
     %h2.results_count Results: #{@results.count} videos found
@@ -33,8 +33,7 @@
       %article.video.row
         .video_data
           %figure.col-sm-2
-            %img(src="http://dummyimage.com/166x236/000/fff" alt="video cover")
-            -# %img(src="#{result.small_cover_url}" alt="video cover")
+            %img(src="#{result.small_cover_url}" alt="video cover")
           .video_body.col-sm-10
             %header
               %h3
@@ -44,6 +43,5 @@
             .details
               %span.average_rating Average rating: #{result.average_rating || 'N/A'}
               %span.reviews_count #{result.reviews.count} reviews
-            - if result.reviews.count > 0
               %footer.video_review
-                = result.reviews.first.body
+                = result.first_review

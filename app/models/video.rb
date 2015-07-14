@@ -10,11 +10,11 @@ class Video < ActiveRecord::Base
 
   index_name [Rails.application.engine_name, Rails.env].join('_')
 
-  settings do
-    mappings do
-      indexes :average_rating, type: 'float'
-    end
-  end
+  # settings do
+  #   mappings do
+  #     indexes :average_rating, type: 'float'
+  #   end
+  # end
 
   mount_uploader :small_cover, SmallCoverUploader
   mount_uploader :large_cover, LargeCoverUploader
@@ -44,6 +44,15 @@ class Video < ActiveRecord::Base
               fields: ['title^100', 'description^50'],
               operator: 'and'
             }
+          },
+          highlight: {
+            number_of_fragments: 0,
+            pre_tags: ['<em class="label label-highlight">'],
+            post_tags: ['</em>'],
+            fields: {
+              'title' => {},
+              'description' => {}
+            }
           }
         }
       else
@@ -56,6 +65,7 @@ class Video < ActiveRecord::Base
 
     if query.present? && options[:reviews]
       search_definition[:query][:multi_match][:fields] << 'reviews.body'
+      search_definition[:highlight][:fields]['reviews.body'] = {fragment_size: 235 }
     end
 
     if options[:rating_from].present? || options[:rating_to].present?
@@ -79,8 +89,8 @@ class Video < ActiveRecord::Base
       include: {
         reviews: { only: :body }
       },
-      methods: [:average_rating],
-      only: [:title, :description, :average_rating]
+      methods: [:average_rating, :small_cover_url],
+      only: [:title, :description, :average_rating, :small_cover_url]
     )
   end
 

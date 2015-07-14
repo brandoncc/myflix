@@ -114,4 +114,50 @@ feature 'User searches using advanced search', elasticsearch: true do
     expect(page).to have_css('article.video', count: 1)
     expect(page).to have_content('Super Dog')
   end
+
+  scenario 'Results are highlighted' do
+    sign_in
+    visit advanced_search_videos_path
+
+    within '.advanced_search' do
+      fill_in :search_text, with: 'super'
+      click_on 'Search'
+    end
+
+    expect(page).to have_css('.advanced_search article.video em')
+  end
+
+  scenario 'Results are highlighted' do
+    sign_in
+    visit advanced_search_videos_path
+
+    within '.advanced_search' do
+      fill_in :search_text, with: 'man'
+      click_on 'Search'
+    end
+
+    expect(page).to have_css('.label-highlight', count: 1)
+
+    within '.advanced_search' do
+      fill_in :search_text, with: 'dog'
+      click_on 'Search'
+    end
+
+    expect(page).to have_css('.label-highlight', count: 2)
+
+    within '.advanced_search' do
+      fill_in :search_text, with: 'amazing'
+      click_on 'Search'
+    end
+
+    expect(page).to have_css('.label-highlight', count: 0)
+
+    within '.advanced_search' do
+      fill_in :search_text, with: 'amazing'
+      check 'Include Reviews'
+      click_on 'Search'
+    end
+
+    expect(page).to have_css('.label-highlight', count: 1)
+  end
 end
